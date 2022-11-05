@@ -20,6 +20,8 @@ contract COP27_Offset_Pool {
     address[] public contributorsAddresses;
     /// @notice Sum of all contributions
     uint256 public totalCarbonPooled = 0;
+		/// @notice sum of pledged carbon tokens
+		uint256 public totalCarbonPledged = 0;
     /// @notice Address to where all the contributions are sent to (to be offset manually later)
 		// TODO : change this to actual multisig address later 
     address public poolingAddress = 0xC37861B48Ba866C3e3F8827a25c7a9F733E58BDD; // COP27 multisig
@@ -31,7 +33,7 @@ contract COP27_Offset_Pool {
     address private USDCAddress = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174;
 
     ///@notice Emitted after a pledge has been made to offset carbon emission
-    event OffsetPledgeCaptured(bytes32 email, bytes32 dep, bytes32 dest, string token, uint256 carbonTokenPledged);
+    event OffsetPledgeCaptured(bytes32 email, bytes8 dep, string token, uint256 carbonTokenPledged);
 		
 		///@notice Emitted after carbon tokens have been sent to pooling address.
     event ContributionSent(string tokenOrCoin, uint256 carbonTokenContributed);
@@ -42,8 +44,18 @@ contract COP27_Offset_Pool {
     ///@dev Needed, otherwise uniswap router for matic fails
     fallback() external payable {}
 
-		function capturePledge(bytes memory email, bytes32 dep, bytes32 dest, uint256 carbonTokenPledged) public {
+		/// @notice emits event to signify a pledge to emit carbon emissions
+    /// @param email email of the entity/person pledging to offset their emissions
+		/// @param dep airport code of the departure
+		/// @param carbonTokenPledged amount of tCO2 the entity/person is pledging to offset
+		function capturePledge(bytes memory email, bytes8 dep, uint256 carbonTokenPledged) public {
+			totalCarbonPledged += carbonTokenPledged;
 			emit OffsetPledgeCaptured(keccak256(email), dep, dest, "NCT", carbonTokenPledged);
+		}
+
+		/// @notice returns total pledge amount upto that point
+		function getPledgeAmount() public pure view returns(uint256) {
+			return totalCarbonPledged;
 		}
 
     /// @notice Receives Matic, swaps to carbon token and forwards the swapped
