@@ -50,11 +50,11 @@ contract COP27_Offset_Pool {
 		/// @param carbonTokenPledged amount of tCO2 the entity/person is pledging to offset
 		function capturePledge(bytes memory email, bytes8 dep, uint256 carbonTokenPledged) public {
 			totalCarbonPledged += carbonTokenPledged;
-			emit OffsetPledgeCaptured(keccak256(email), dep, dest, "NCT", carbonTokenPledged);
+			emit OffsetPledgeCaptured(keccak256(email), dep, "NCT", carbonTokenPledged);
 		}
 
 		/// @notice returns total pledge amount upto that point
-		function getPledgeAmount() public pure view returns(uint256) {
+		function getPledgeAmount() public view returns(uint256) {
 			return totalCarbonPledged;
 		}
 
