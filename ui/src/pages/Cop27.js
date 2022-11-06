@@ -6,8 +6,6 @@ import { Link, Container, Typography, Divider, Stack, Button, Card } from '@mui/
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
-import Logo from '../components/logo';
-import Iconify from '../components/iconify';
 // sections
 import { Form } from '../sections/cop27';
 
@@ -43,7 +41,8 @@ const StyledContent = styled('div')(({ theme }) => ({
 
 export default function Cop27() {
 	const [haveMetamask, sethaveMetamask] = useState(true);
-  const [accountAddress, setAccountAddress] = useState('Connect');
+  const [accountAddress, setAccountAddress] = useState('');
+	const [shortAddress, setShortAddress] = useState('');
   const [isConnected, setIsConnected] = useState(false);
 
   const { ethereum } = window;
@@ -58,7 +57,21 @@ export default function Cop27() {
       sethaveMetamask(true);
     };
     checkMetamaskAvailability();
+		checkIfAccountChanged();
   }, []);
+
+	const checkIfAccountChanged = async () => {
+		try {
+			const {ethereum} = window;
+			ethereum.on('accountsChanged', (accounts) => {
+				console.log("Account changed to:", accounts[0]);
+				setAccountAddress(accounts[0]);
+				setShortAddress(`${accounts[0].slice(0,5)}...${accounts[0].slice(-4)}`);
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	}
 
   const connectWallet = async () => {
     try {
@@ -69,47 +82,54 @@ export default function Cop27() {
         method: 'eth_requestAccounts',
       });
       setAccountAddress(accounts[0]);
+			setShortAddress(`${accounts[0].slice(0,5)}...${accounts[0].slice(-4)}`);
       setIsConnected(true);
     } catch (error) {
       setIsConnected(false);
     }
   };
 
+	const disConnectWallet = async () => {
+		setAccountAddress('');
+		setIsConnected(false);
+		setShortAddress('');
+  };
+
   return (
     <>
       <Helmet>
-        <title> Login | Minimal UI </title>
+        <title> Decarbonise COP27 </title>
       </Helmet>
 			
       <StyledRoot>
-				<Button sx={{
+				<Typography sx={{
 					position: 'fixed',
-					top: { xs: 16, sm: 24, md: 40 },
-					right: { xs: 16, sm: 24, md: 40 },
-					}}
-				variant="contained" 
-				onClick={connectWallet}>
-        	{accountAddress}
-      	</Button>
-        {/* <Logo
-          sx={{
-            position: 'fixed',
-            top: { xs: 16, sm: 24, md: 40 },
-            left: { xs: 16, sm: 24, md: 40 },
-          }}
-        />
-				
-        /> */}
-
-        {/* {mdUp && (
-          <StyledSection>
-            <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome Back
-            </Typography>
-            <img src="/assets/illustrations/illustration_login.png" alt="login" />
-          </StyledSection>
-        )} */}
-
+					top: { xs: 20, sm: 30, md: 45},
+					right: { xs: 130, sm: 140, md: 160},
+					}}>{shortAddress}</Typography>
+				{isConnected ?
+				(
+						<Button sx={{
+							position: 'fixed',
+							top: { xs: 16, sm: 24, md: 40 },
+							right: { xs: 16, sm: 24, md: 40 },
+							}}
+						variant="contained" 
+						onClick={disConnectWallet}>
+							Disconnect
+						</Button>
+				) : (	
+					<Button sx={{
+						position: 'fixed',
+						top: { xs: 16, sm: 24, md: 40 },
+						right: { xs: 16, sm: 24, md: 40 },
+						}}
+					variant="contained" 
+					onClick={connectWallet}>
+						Connect
+					</Button>
+					)
+				}
         <Container maxWidth="sm">
           <StyledContent>
             <Form />
