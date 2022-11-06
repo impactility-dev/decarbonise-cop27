@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 // @mui
 import { styled } from '@mui/material/styles';
+import { useTheme } from '@emotion/react';
 import { Link, Container, Typography, Divider, Stack, Button, Card } from '@mui/material';
 // hooks
 import useResponsive from '../hooks/useResponsive';
@@ -29,7 +30,7 @@ const StyledSection = styled('div')(({ theme }) => ({
 }));
 
 const StyledContent = styled('div')(({ theme }) => ({
-  maxWidth: 480,
+  maxWidth: 300,
   margin: 'auto',
   minHeight: '100vh',
   display: 'flex',
@@ -42,36 +43,42 @@ const StyledContent = styled('div')(({ theme }) => ({
 
 export default function Cop27() {
   const mdUp = useResponsive('up', 'md');
-
+  const theme = useTheme()
   return (
     <>
       <Helmet>
-        <title> Login | Minimal UI </title>
+        <title> COP27 </title>
       </Helmet>
 			
       <StyledRoot>
-        {/* <Logo
-          sx={{
-            position: 'fixed',
-            top: { xs: 16, sm: 24, md: 40 },
-            left: { xs: 16, sm: 24, md: 40 },
-          }}
-        /> */}
-
-        {/* {mdUp && (
-          <StyledSection>
-            <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome Back
-            </Typography>
-            <img src="/assets/illustrations/illustration_login.png" alt="login" />
-          </StyledSection>
-        )} */}
-
+      
         <Container maxWidth="sm">
-          <StyledContent>
-            <Form />
+          <StyledContent sx={{
+            minHeight: '5vh',
+            mb: 0
+          }}>
+          <Typography variant="h4" gutterBottom align='center'>
+              Offset your COP27 Carbon Footprint
+            </Typography>
           </StyledContent>
+        <Card
+              sx={{
+                m: 1,
+                pt: 1,
+                boxShadow: 4,
+                textAlign: 'center',
+                color: (theme) => theme.palette.info.darker,
+                bgcolor: (theme) => theme.palette.info.lighter,
+              }}
+            > 
+          <StyledContent>
+            
+            <Form />
+           
+          </StyledContent>
+          </Card>
         </Container>
+        
       </StyledRoot>
     </>
   );
