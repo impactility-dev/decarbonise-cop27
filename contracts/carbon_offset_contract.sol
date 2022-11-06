@@ -3,6 +3,7 @@ pragma solidity ^0.8.9;
 
 import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@opengsn/contracts/src/BaseRelayRecipient.sol";
 
 /// @title COP27 attendee pooling contract
 /// @author Sumitjh26997
@@ -11,10 +12,14 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 ///         never owns any coins or tokens as all transactions happen instantly
 ///         and are forwarded in the same transaction.
 
-contract COP27_Offset_Pool {
+contract COP27_Offset_Pool is BaseRelayRecipient {
     using SafeERC20 for IERC20;
 
-    /// @notice Stores all contributions (summed up) for each address
+		/// @notice address of the OpenGSN forwarder contract 
+		constructor(address forwarder) public {
+			_setTrustedForwarder(forwarder);
+		}
+		/// @notice Stores all contributions (summed up) for each address
     mapping(address => uint256) public contributions;
     /// @notice An array of addresses which have contributed
     address[] public contributorsAddresses;
@@ -33,7 +38,7 @@ contract COP27_Offset_Pool {
     address private USDCAddress = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174;
 
     ///@notice Emitted after a pledge has been made to offset carbon emission
-    event OffsetPledgeCaptured(bytes32 email, bytes8 dep, string token, uint256 carbonTokenPledged);
+    event OffsetPledgeCaptured(address pledger, bytes32 email, bytes8 dep, string token, uint256 carbonTokenPledged);
 		
 		///@notice Emitted after carbon tokens have been sent to pooling address.
     event ContributionSent(string tokenOrCoin, uint256 carbonTokenContributed);
@@ -44,13 +49,17 @@ contract COP27_Offset_Pool {
     ///@dev Needed, otherwise uniswap router for matic fails
     fallback() external payable {}
 
+		function versionRecipient() external override view returns (string memory) {
+			return "2.2.5";
+		}
+
 		/// @notice emits event to signify a pledge to emit carbon emissions
     /// @param email email of the entity/person pledging to offset their emissions
 		/// @param dep airport code of the departure
 		/// @param carbonTokenPledged amount of tCO2 the entity/person is pledging to offset
 		function capturePledge(bytes memory email, bytes8 dep, uint256 carbonTokenPledged) public {
 			totalCarbonPledged += carbonTokenPledged;
-			emit OffsetPledgeCaptured(keccak256(email), dep, "NCT", carbonTokenPledged);
+			emit OffsetPledgeCaptured(_msgSender(), keccak256(email), dep, "NCT", carbonTokenPledged);
 		}
 
 		/// @notice returns total pledge amount upto that point
@@ -79,7 +88,7 @@ contract COP27_Offset_Pool {
         if (fromToken == NCTAddress) {
             // Directly transfer NCT tokens.
             IERC20(fromToken).safeTransferFrom(
-                msg.sender,
+                _msgSender(),
                 address(this),
                 carbonAmount
             );
@@ -196,7 +205,7 @@ contract COP27_Offset_Pool {
         );
         // transfer tokens to this contract
         IERC20(fromToken).safeTransferFrom(
-            msg.sender,
+            _msgSender(),
             address(this),
             tokensNeeded[0]
         );
@@ -216,15 +225,15 @@ contract COP27_Offset_Pool {
     /// @param carbonAmount Amount of carbon tokens contributed.
     function doAccounting(uint256 carbonAmount) private {
         totalCarbonPooled += carbonAmount;
-        if (contributions[msg.sender] == 0) {
-            contributorsAddresses.push(msg.sender);
+        if (contributions[_msgSender()] == 0) {
+            contributorsAddresses.push(_msgSender());
         }
-        contributions[msg.sender] += carbonAmount;
+        contributions[_msgSender()] += carbonAmount;
     }
 
     /// @notice Returns excess matic not used in the swap.
     function returnExcessMatic() private {
-        (bool success, ) = msg.sender.call{value: address(this).balance}("");
+        (bool success, ) = _msgSender().call{value: address(this).balance}("");
         require(success, "refund failed");
     }
 
