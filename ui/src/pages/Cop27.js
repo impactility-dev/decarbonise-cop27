@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 // @mui
 import { styled } from '@mui/material/styles';
@@ -41,7 +42,38 @@ const StyledContent = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Cop27() {
+	const [haveMetamask, sethaveMetamask] = useState(true);
+  const [accountAddress, setAccountAddress] = useState('Connect');
+  const [isConnected, setIsConnected] = useState(false);
+
+  const { ethereum } = window;
   const mdUp = useResponsive('up', 'md');
+
+	useEffect(() => {
+    const { ethereum } = window;
+    const checkMetamaskAvailability = async () => {
+      if (!ethereum) {
+        sethaveMetamask(false);
+      }
+      sethaveMetamask(true);
+    };
+    checkMetamaskAvailability();
+  }, []);
+
+  const connectWallet = async () => {
+    try {
+      if (!ethereum) {
+        sethaveMetamask(false);
+      }
+      const accounts = await ethereum.request({
+        method: 'eth_requestAccounts',
+      });
+      setAccountAddress(accounts[0]);
+      setIsConnected(true);
+    } catch (error) {
+      setIsConnected(false);
+    }
+  };
 
   return (
     <>
@@ -57,6 +89,15 @@ export default function Cop27() {
             left: { xs: 16, sm: 24, md: 40 },
           }}
         />
+				<Button sx={{
+					position: 'fixed',
+					top: { xs: 16, sm: 24, md: 40 },
+					right: { xs: 16, sm: 24, md: 40 },
+				}}
+				variant="contained" 
+				onClick={connectWallet}>
+        	{accountAddress}
+      	</Button>
 
         {mdUp && (
           <StyledSection>
