@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
+import { ethers } from 'ethers';
 import { Helmet } from 'react-helmet-async';
 // @mui
 import { styled } from '@mui/material/styles';
 import { useTheme } from '@emotion/react';
-import { Link, Container, Typography, Divider, Stack, Button, Card } from '@mui/material';
+import { Link, Container, Typography, Divider, Stack, Button, Card, Modal, Box } from '@mui/material';
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
@@ -11,6 +12,18 @@ import useResponsive from '../hooks/useResponsive';
 import { Form } from '../sections/cop27';
 
 // ----------------------------------------------------------------------
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4,
+	borderRadius: '8px'
+};
 
 const StyledRoot = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -44,6 +57,7 @@ export default function Cop27() {
   const [accountAddress, setAccountAddress] = useState('');
 	const [shortAddress, setShortAddress] = useState('');
   const [isConnected, setIsConnected] = useState(false);
+	const [networkChange, setNetworkChange] = useState(false);
 
   const { ethereum } = window;
   const mdUp = useResponsive('up', 'md');
@@ -58,7 +72,10 @@ export default function Cop27() {
     };
     checkMetamaskAvailability();
 		checkIfAccountChanged();
-  }, []);
+		if(isConnected) {
+			checkIfNetworkChanged();
+		}
+  }, [isConnected]);
 
 	const checkIfAccountChanged = async () => {
 		try {
@@ -70,6 +87,25 @@ export default function Cop27() {
 			});
 		} catch (error) {
 			console.log(error);
+		}
+	}
+	
+	const checkIfNetworkChanged = async () => {
+		const provider = new ethers.providers.Web3Provider(window.ethereum);
+		provider.provider.on("chainChanged", (chainId) => {
+			console.log("chain Changed", chainId);
+			if (parseInt(chainId, 16) !== 137) {
+				setNetworkChange(true)
+			}
+		})
+	}
+	
+
+	const checkIfNetworkCorrect = async () => {
+		const provider = new ethers.providers.Web3Provider(window.ethereum);
+		const network = await provider.getNetwork();
+		if (network.chainId !== 137) {
+			setNetworkChange(true)
 		}
 	}
 
@@ -84,10 +120,27 @@ export default function Cop27() {
       setAccountAddress(accounts[0]);
 			setShortAddress(`${accounts[0].slice(0,5)}...${accounts[0].slice(-4)}`);
       setIsConnected(true);
+			const provider = new ethers.providers.Web3Provider(window.ethereum);
+			console.log(await provider.getNetwork())
+			checkIfNetworkCorrect();
     } catch (error) {
       setIsConnected(false);
     }
   };
+
+	function toHex(num) {
+		const val = Number(num);
+		return `0x${val.toString(16)}`;
+	};
+
+	const switchNetwork = async () => {
+		const provider = new ethers.providers.Web3Provider(window.ethereum);
+		await provider.provider.request({
+			method: "wallet_switchEthereumChain",
+			params: [{ chainId: toHex(137) }],
+		});
+		setNetworkChange(false);
+	}
 
 	const disConnectWallet = async () => {
 		setAccountAddress('');
@@ -102,6 +155,27 @@ export default function Cop27() {
       </Helmet>
 			
       <StyledRoot>
+			<Modal
+			open={networkChange}
+			aria-labelledby="modal-modal-title"
+			aria-describedby="modal-modal-description"
+			>
+				<Box sx={style}>
+					<Typography id="modal-modal-title" variant="h6" component="h2">
+            Connected to wrong network
+          </Typography>
+					<Typography id="modal-modal-description" sx={{ mt: 2 }}>
+						Our dapp works best with Polygon Mainnet, please switch to the Polygon network
+					</Typography>
+					<Button sx={{
+						position: 'absolute',
+						}}
+					variant="contained" 
+					onClick={switchNetwork}>
+						Switch Network
+					</Button>
+				</Box>
+			</Modal>
       <Typography sx={{
 					position: 'absolute',
 					top: { xs: 20, sm: 30, md: 45},
