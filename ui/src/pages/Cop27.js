@@ -84,7 +84,6 @@ export default function Cop27() {
       setAccountAddress(accounts[0]);
 			setShortAddress(`${accounts[0].slice(0,5)}...${accounts[0].slice(-4)}`);
       setIsConnected(true);
-			console.log(window.ethereum)
     } catch (error) {
       setIsConnected(false);
     }
@@ -103,25 +102,26 @@ export default function Cop27() {
       </Helmet>
 			
       <StyledRoot>
-				<Typography sx={{
-					position: 'fixed',
+      <Typography sx={{
+					position: 'absolute',
 					top: { xs: 20, sm: 30, md: 45},
 					right: { xs: 130, sm: 140, md: 160},
 					}}>{shortAddress}</Typography>
 				{isConnected ?
 				(
 						<Button sx={{
-							position: 'fixed',
+							position: 'absolute',
 							top: { xs: 16, sm: 24, md: 40 },
 							right: { xs: 16, sm: 24, md: 40 },
 							}}
 						variant="contained" 
-						onClick={disConnectWallet}>
+						onClick={disConnectWallet}
+            color="error">
 							Disconnect
 						</Button>
 				) : (	
 					<Button sx={{
-						position: 'fixed',
+						position: 'absolute',
 						top: { xs: 16, sm: 24, md: 40 },
 						right: { xs: 16, sm: 24, md: 40 },
 						}}

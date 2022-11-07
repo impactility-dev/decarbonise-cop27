@@ -53,16 +53,18 @@ export default function Form(props) {
 	const [passengers, setPassengers] = useState(1);
 	const [flightDistance, setFlightDistance] = useState(0);
 	const [flightEmission, setFlightEmission] = useState();
-
+  const [finalAmount, setFinalAmount] = useState(0);
 
 	useEffect(() => {
-    async function getDetails(departure, roundTrip, flightClass) {
+    async function getDetails(departure, roundTrip, flightClass, passengers) {
       const data = await calculateFlightDistance(departure, roundTrip, flightClass);
       setFlightDistance(data.distance);
       setFlightEmission(data.emission);
+      calculateOffsetAmount(passengers, data.emission)
+      
     }
 		if (departure && flightClass && passengers) {
-		 getDetails(departure, roundTrip, flightClass)
+		 getDetails(departure, roundTrip, flightClass, passengers)
 		}
   }, [departure, flightClass, roundTrip, passengers]);
   const handleIncrement = () => {
@@ -77,6 +79,19 @@ export default function Form(props) {
     }
 	}
 
+  const testToast = () =>{
+  
+      toast.info(CustomToastWithLink, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false, 
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+  
+  }
 	const initContract = async() => {
 		const provider = new ethers.providers.Web3Provider(window.ethereum);
 		const offsetContract = new ethers.Contract(contractAddress, contract.abi, provider);
@@ -90,9 +105,9 @@ export default function Form(props) {
 		return offsetContractWithSigner;
 	}
 
-	const calculateOffsetAmount = async () => {
+	const calculateOffsetAmount = async (passengers, flightEmission) => {
 		let finalAmount;
-		const paymentToken = "MATIC";
+		const paymentToken = "NCT";
 		const value = new BigNumber(flightEmission.asFloat() * passengers);
 		if (paymentToken === "NCT") {
 			finalAmount = value;
@@ -103,12 +118,18 @@ export default function Form(props) {
     	amount = new BigNumber(amount, tokenDecimals.MATIC);
 			finalAmount =  new BigNumber(1.01 * amount.asFloat(), tokenDecimals.MATIC);
 		}
-
-		return finalAmount;
+    setFinalAmount(finalAmount?.asFloat());
 	}
 
+  const CustomToastWithLink = () => (
+    <div>
+      <a target="_blank" rel="noreferrer" href="https://polygonscan.com">https://polygonscan.com</a>
+    </div>
+  );
 	const payAmount = async () => {
-		const paymentValue = await calculateOffsetAmount();
+		
+    await calculateOffsetAmount();
+    const paymentValue = new BigNumber(finalAmount);
 		const contract = await initContractWithSigner();
 		const transaction = await contract.participateWithMatic(paymentValue.asBigNumber(), {value: paymentValue.asBigNumber(), gasLimit: 10000});
 
@@ -127,7 +148,7 @@ export default function Form(props) {
 		toast.info(`Transaction Succeeded - https://polygonscan.com/tx/${transaction.hash}`, {
 			position: "top-right",
 			autoClose: 5000,
-			hideProgressBar: false,
+			hideProgressBar: false, 
 			pauseOnHover: true,
 			draggable: true,
 			progress: undefined,
@@ -261,17 +282,18 @@ export default function Form(props) {
             <MoneyIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="5" secondary="MATIC" />
+        <ListItemText primary={`${finalAmount}`} secondary="MATIC" />
       </ListItem>
     </List>
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
         <Button color="secondary"  variant="contained"onClick={payAmount} >Pay</Button>
-				<ToastContainer />
-        <Button color="secondary"  variant="contained" onClick={handleDecrement} >Pledge</Button>
-				<ToastContainer />
+				{/* <ToastContainer /> */}
+        <Button color="secondary"  variant="contained" onClick={testToast} >Pledge</Button>
+				{/* <ToastContainer /> */}
       </Stack>
+      <ToastContainer />
       </Card>
       </Grid>
     </Grid>
