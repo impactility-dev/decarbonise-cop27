@@ -70,6 +70,15 @@ const ERROR = {
   contrastText: '#fff',
 };
 
+const POAP = {
+	lighter: '#9289FF',
+  light: '#9289FF',
+  main: '#9289FF',
+  dark: '#9289FF',
+  darker: '#9289FF',
+  contrastText: '#fff',
+}
+
 const palette = {
   common: { black: '#000', white: '#fff' },
   primary: PRIMARY,
@@ -79,6 +88,7 @@ const palette = {
   warning: WARNING,
   error: ERROR,
   grey: GREY,
+	poap: POAP,
   divider: alpha(GREY[500], 0.24),
   text: {
     primary: GREY[800],

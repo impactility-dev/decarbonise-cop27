@@ -319,58 +319,22 @@ export default function Form(props) {
 
       <Grid item xs={10} lg={4} sm={10}>
         <Card
-    sx={{
-      p: 5,
-      pt: 1,
-      m: 2,
-      boxShadow: '10px 5px 5px blue',
-    }}
-  > 
-    <h3>Offset Flight</h3>
-      <Stack spacing={6}>
-      
-      {/* <p>Flight Distance: 100km</p>
-      <p>Flight Distance: 100km</p>
-      <p>Flight Distance: 100km</p> */}
-      <List
-      sx={{
-        width: '100%',
-        maxWidth: 360,
-        bgcolor: 'background.paper',
-      }}
-    >
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            <NavigationIcon />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary={`${flightDistance || '---'} km`} secondary="Distance(one-way)" />
-      </ListItem>
-      <Divider variant="inset" component="li" />
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            <FactoryIcon />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary={`${flightEmission?.asFloat() * passengers || '---'} tCO2`} secondary="Emissions" />
-      </ListItem>
-      <Divider variant="inset" component="li" />
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            <MoneyIcon />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary={`${finalAmount}`} secondary="MATIC" />
-      </ListItem>
-    </List>
+					sx={{
+						p: 5,
+						pt: 1,
+						m: 2,
+						boxShadow: '10px 5px 5px #9289FF',
+					}}
+				> 
+    <h3>Mint your POAP</h3>
+      <Stack spacing={6} alignItems="center">
+				<img src='/assets/cop27-poap-1.png' alt="POAP art work" width="60%" height="60%" />
+				<br/>This POAP will enable you to vote on a nature conservation project. Participants will be notified about the vote on poap.vote shortly after COP 27<br/>
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <Button color="secondary"  variant="contained"onClick={payAmount} >Pay</Button>
-        <Button color="secondary"  variant="contained" onClick={testToast} >Pledge</Button>
+        <Button color="poap"  variant="contained" onClick={payAmount} disabled>Mint</Button>
+        <Button color="poap"  variant="contained" target="_blank" href={`https://app.poap.xyz/scan/${accountAddress}`} disabled={!accountAddress}>My POAPs</Button>
       </Stack>
       <ToastContainer />
       </Card>
