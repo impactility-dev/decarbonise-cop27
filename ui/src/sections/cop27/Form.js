@@ -169,12 +169,13 @@ export default function Form(props) {
       pt: 1,
       m: 2,
       boxShadow: '10px 5px 5px #79E8B9',
+      height: "450px"
       // textAlign: 'center',
       // alignContent: 'center',
     }}
   > 
     <h3>Configure Flight</h3>
-      <Stack spacing={3}>
+      <Stack spacing={4}>
       <Autocomplete
           sx={{ mt: 2 }}
           autoHighlight
@@ -244,6 +245,7 @@ export default function Form(props) {
       pt: 1,
       m: 2,
       boxShadow: '10px 5px 5px #6079E8',
+      height: "450px"
     }}
   > 
     <h3>Offset Flight</h3>
@@ -324,6 +326,7 @@ export default function Form(props) {
 						pt: 1,
 						m: 2,
 						boxShadow: '10px 5px 5px #9289FF',
+            height: "450px"
 					}}
 				> 
     <h3>Mint your POAP</h3>
