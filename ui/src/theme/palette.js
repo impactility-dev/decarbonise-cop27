@@ -1,3 +1,4 @@
+import { Flight } from '@mui/icons-material';
 import { alpha } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
@@ -79,6 +80,23 @@ const POAP = {
   contrastText: '#fff',
 }
 
+const OFFSET = {
+	lighter: '#6079E8',
+  light: '#6079E8',
+  main: '#6079E8',
+  dark: '#6079E8',
+  darker: '#6079E8',
+  contrastText: '#fff',
+}
+
+const FLIGHT = {
+  lighter: '#22D388',
+  light: '#22D388',
+  main: '#22D388',
+  dark: '#22D388',
+  darker: '#22D388',
+  contrastText: '#fff',
+}
 const palette = {
   common: { black: '#000', white: '#fff' },
   primary: PRIMARY,
@@ -89,6 +107,8 @@ const palette = {
   error: ERROR,
   grey: GREY,
 	poap: POAP,
+  offset: OFFSET,
+  flight: FLIGHT,
   divider: alpha(GREY[500], 0.24),
   text: {
     primary: GREY[800],

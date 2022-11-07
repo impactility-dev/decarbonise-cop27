@@ -213,7 +213,7 @@ export default function Cop27() {
           
           </StyledContent> */}
           <StyledContent>
-          <Typography variant="h4" gutterBottom align='center'>
+          <Typography variant="h4" align='center' sx={{ mt: 3, mb: 3, fontFamily: 'Helvetica'}}>
               Offset your COP27 Carbon Footprint
             </Typography>
             <Form address={accountAddress}/>

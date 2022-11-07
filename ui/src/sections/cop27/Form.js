@@ -74,7 +74,7 @@ export default function Form(props) {
       await calculateOffsetAmount(passengers, flightEmission);
     }
 
-		if (token) {
+		if (token && flightEmission) {
 		 calculateAmount();
 		}
   }, [token]);
@@ -108,14 +108,14 @@ export default function Form(props) {
 	const calculateOffsetAmount = async (passengers, flightEmission) => {
 		let finalAmount;
 		const paymentToken = token;
-		const value = new BigNumber(flightEmission.asFloat() * passengers);
+		const value = new BigNumber(flightEmission?.asFloat() * passengers);
 		if (paymentToken === "NCT") {
 			finalAmount = value;
 		} else {
 			const contract = await initContract();
 			let amount = await contract.calculateNeededAmount(addresses.WMATIC, value.asBigNumber());
     	amount = new BigNumber(amount, tokenDecimals.MATIC);
-			finalAmount =  new BigNumber(1.01 * amount.asFloat(), tokenDecimals.MATIC);
+			finalAmount =  new BigNumber(1.01 * amount?.asFloat(), tokenDecimals.MATIC);
 		}
     setFinalAmount(finalAmount?.asFloat());
 	}
@@ -178,13 +178,14 @@ export default function Form(props) {
       p: 5,
       pt: 1,
       m: 2,
-      boxShadow: '10px 5px 5px #79E8B9',
+      boxShadow: '10px 5px 5px #22D388',
+      height: "450px"
       // textAlign: 'center',
       // alignContent: 'center',
     }}
   > 
     <h3>Configure Flight</h3>
-      <Stack spacing={3}>
+      <Stack spacing={4}>
       <Autocomplete
           sx={{ mt: 2 }}
           autoHighlight
@@ -229,20 +230,20 @@ export default function Form(props) {
         <Checkbox name="round-trip" label="Round Trip" checked={roundTrip} onChange={(event) => {
           setRoundTrip(!roundTrip)
         }}
-          color="success"
+          color="flight"
         />
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="center" sx={{ my: 2 }}>
         <ButtonGroup variant="contained" aria-label="outlined primary button group">
-          <Button color="success" onClick={handleDecrement} width="15%" sx={{ width: '15%' }}><RemoveIcon /></Button>
+          <Button color="flight" onClick={handleDecrement} width="15%" sx={{ width: '15%' }}><RemoveIcon /></Button>
           <TextField
           inputProps={{style: { textAlign: 'center' }}}
           value={`${passengers} passenger(s)`}
           readOnly
           />
           {/* <Button width="70%" disabled sx={{ width: '70%' }}>{passengers} passenger&#40;s&#41;</Button> */}
-          <Button width="15%" color="success" onClick={handleIncrement} sx={{ width: '15%' }}><AddIcon /></Button>
+          <Button width="15%" color="flight" onClick={handleIncrement} sx={{ width: '15%' }}><AddIcon /></Button>
         </ButtonGroup>
       </Stack>
       </Card>
@@ -254,6 +255,7 @@ export default function Form(props) {
       pt: 1,
       m: 2,
       boxShadow: '10px 5px 5px #6079E8',
+      height: "450px"
     }}
   > 
     <h3>Offset Flight</h3>
@@ -318,9 +320,9 @@ export default function Form(props) {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <Button color="secondary"  variant="contained" onClick={payAmount} >Pay</Button>
+        <Button color="offset"  variant="contained" onClick={payAmount}>Pay</Button>
 				{/* <ToastContainer /> */}
-        <Button color="secondary"  variant="contained" onClick={pledgeAmount} >Pledge</Button>
+        <Button color="offset"  variant="contained" onClick={pledgeAmount} >Pledge</Button>
 				{/* <ToastContainer /> */}
       </Stack>
       <ToastContainer />
@@ -334,6 +336,7 @@ export default function Form(props) {
 						pt: 1,
 						m: 2,
 						boxShadow: '10px 5px 5px #9289FF',
+            height: "450px"
 					}}
 				> 
     <h3>Mint your POAP</h3>
