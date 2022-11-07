@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
+import { ethers } from 'ethers';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // @mui
 import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox, Autocomplete, Popper, Select, MenuItem,
   Button, ButtonGroup, Card, Item
@@ -25,14 +28,25 @@ import MoneyIcon from '@mui/icons-material/Money';
 import Iconify from '../../components/iconify';
 import { airports } from '../../utils/airportLists';
 import { calculateFlightDistance } from './Calculator';
+import { BigNumber } from '../../utils/BigNumber';
+import { addresses }from '../../utils/addresses';
+
+const contract = require('../../abi/offsetContractABI.json');
 
 const StyledPopper = styled((props) => <Popper placement="bottom-start" {...props} />)({
   width: '300px !important',
 });
 
+const tokenDecimals = {
+	NCT: 18,
+	MATIC: 18,
+};
+
 export default function Form(props) {
   const navigate = useNavigate();
 
+	const contractAddress = '0xb05FF1e917Ce26cf03A1c45DE4A2976E1B1724F1';
+	const accountAddress = props.address;
   const [departure, setDeparture] = useState();
 	const [flightClass, setFlightClass] = useState('economy');
 	const [roundTrip, setRoundTrip] = useState(true);
@@ -62,6 +76,66 @@ export default function Form(props) {
       setPassengers(counter)  
     }
 	}
+
+	const initContract = async() => {
+		const provider = new ethers.providers.Web3Provider(window.ethereum);
+		const offsetContract = new ethers.Contract(contractAddress, contract.abi, provider);
+		return offsetContract;
+	}
+
+	const initContractWithSigner = async() => {
+		const provider = new ethers.providers.Web3Provider(window.ethereum);
+		const offsetContract = new ethers.Contract(contractAddress, contract.abi, provider);
+		const offsetContractWithSigner = offsetContract.connect(provider.getSigner());
+		return offsetContractWithSigner;
+	}
+
+	const calculateOffsetAmount = async () => {
+		let finalAmount;
+		const paymentToken = "MATIC";
+		const value = new BigNumber(flightEmission.asFloat() * passengers);
+		if (paymentToken === "NCT") {
+			finalAmount = value;
+		} else {
+			const contract = await initContract();
+			console.log(contract);
+			let amount = await contract.calculateNeededAmount(addresses.WMATIC, value.asBigNumber());
+    	amount = new BigNumber(amount, tokenDecimals.MATIC);
+			finalAmount =  new BigNumber(1.01 * amount.asFloat(), tokenDecimals.MATIC);
+		}
+
+		return finalAmount;
+	}
+
+	const payAmount = async () => {
+		const paymentValue = await calculateOffsetAmount();
+		const contract = await initContractWithSigner();
+		const transaction = await contract.participateWithMatic(paymentValue.asBigNumber(), {value: paymentValue.asBigNumber(), gasLimit: 10000});
+
+		toast.info(`Transaction Sent - https://polygonscan.com/tx/${transaction.hash}`, {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "light",
+		});
+
+		await transaction.wait();
+
+		toast.info(`Transaction Succeeded - https://polygonscan.com/tx/${transaction.hash}`, {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "light",
+		});
+	}
+
+
   return (
     <>
     <Grid container spacing={4} direction="row" alignItems="center"
@@ -116,22 +190,6 @@ export default function Form(props) {
           <MenuItem value="business">Business Class</MenuItem>
           <MenuItem value="first">First Class</MenuItem>
         </Select>
-        {/* <TextField name="email" label="Email address" />
-
-        <TextField
-          name="password"
-          label="Password"
-          type={showPassword ? 'text' : 'password'}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        /> */}
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
@@ -209,9 +267,10 @@ export default function Form(props) {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <Button color="secondary"  variant="contained"onClick={handleDecrement} >Pay</Button>
+        <Button color="secondary"  variant="contained"onClick={payAmount} >Pay</Button>
+				<ToastContainer />
         <Button color="secondary"  variant="contained" onClick={handleDecrement} >Pledge</Button>
-
+				<ToastContainer />
       </Stack>
       </Card>
       </Grid>

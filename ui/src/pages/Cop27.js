@@ -45,13 +45,6 @@ export default function Cop27() {
 	const [shortAddress, setShortAddress] = useState('');
   const [isConnected, setIsConnected] = useState(false);
 
-  const [departure, setDeparture] = useState();
-	const [flightClass, setFlightClass] = useState('economy');
-	const [roundTrip, setRoundTrip] = useState(true);
-	const [passengers, setPassengers] = useState(1);
-	const [flightDistance, setFlightDistance] = useState(0);
-	const [flightEmission, setFlightEmission] = useState();
-
   const { ethereum } = window;
   const mdUp = useResponsive('up', 'md');
 
@@ -82,7 +75,6 @@ export default function Cop27() {
 
   const connectWallet = async () => {
     try {
-      console.log(window.departure)
       if (!ethereum) {
         sethaveMetamask(false);
       }
@@ -92,6 +84,7 @@ export default function Cop27() {
       setAccountAddress(accounts[0]);
 			setShortAddress(`${accounts[0].slice(0,5)}...${accounts[0].slice(-4)}`);
       setIsConnected(true);
+			console.log(window.ethereum)
     } catch (error) {
       setIsConnected(false);
     }
@@ -149,7 +142,7 @@ export default function Cop27() {
           <Typography variant="h4" gutterBottom align='center'>
               Offset your COP27 Carbon Footprint
             </Typography>
-            <Form />
+            <Form address={accountAddress}/>
           </StyledContent>
          
         </Container>
