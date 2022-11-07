@@ -131,7 +131,7 @@ export default function Cop27() {
 					</Button>
 					)
 				}
-        <Container maxWidth="md">
+        <Container maxWidth="lg">
           {/* <StyledContent sx={{
             minHeight: '5vh',
             mb: 0

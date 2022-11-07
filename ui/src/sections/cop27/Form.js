@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // @mui
 import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox, Autocomplete, Popper, Select, MenuItem,
-  Button, ButtonGroup, Card, Item
+  Button, ButtonGroup, Card, Item, FormControl
 } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { LoadingButton } from '@mui/lab';
@@ -54,6 +54,7 @@ export default function Form(props) {
 	const [flightDistance, setFlightDistance] = useState(0);
 	const [flightEmission, setFlightEmission] = useState();
   const [finalAmount, setFinalAmount] = useState(0);
+  const [token, setToken] = useState("MATIC");
 
 	useEffect(() => {
     async function getDetails(departure, roundTrip, flightClass, passengers) {
@@ -161,7 +162,7 @@ export default function Form(props) {
     <>
     <Grid container spacing={4} direction="row" alignItems="center"
   justifyContent="center">
-      <Grid item xs={10} sm={10} lg={6} >
+      <Grid item xs={10} sm={10} lg={4} >
       <Card
     sx={{
       p: 5,
@@ -175,7 +176,7 @@ export default function Form(props) {
     <h3>Configure Flight</h3>
       <Stack spacing={3}>
       <Autocomplete
-          sx={{ width: 300, mt: 2 }}
+          sx={{ mt: 2 }}
           autoHighlight
           popupIcon={null}
           PopperComponent={StyledPopper}
@@ -236,7 +237,87 @@ export default function Form(props) {
       </Stack>
       </Card>
       </Grid>
-      <Grid item xs={10} lg={6} sm={10}>
+      <Grid item xs={10} lg={4} sm={10}>
+        <Card
+    sx={{
+      p: 5,
+      pt: 1,
+      m: 2,
+      boxShadow: '10px 5px 5px blue',
+    }}
+  > 
+    <h3>Offset Flight</h3>
+      <Stack spacing={6}>
+      
+      {/* <p>Flight Distance: 100km</p>
+      <p>Flight Distance: 100km</p>
+      <p>Flight Distance: 100km</p> */}
+      <List
+      sx={{
+        width: '100%',
+        maxWidth: 360,
+        bgcolor: 'background.paper',
+      }}
+    >
+      <ListItem>
+        <ListItemAvatar>
+          <Avatar>
+            <NavigationIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary={`${Math.round(flightDistance) || '---'} km`} secondary="Distance(one-way)" />
+      </ListItem>
+      <Divider variant="inset" component="li" />
+      <ListItem>
+        <ListItemAvatar>
+          <Avatar>
+            <FactoryIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary={`${flightEmission?.asFloat() * passengers || '---'} tCO2`} secondary="Emissions" />
+      </ListItem>
+      <Divider variant="inset" component="li" />
+      <ListItem>
+        <ListItemAvatar>
+          <Avatar>
+            <MoneyIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary={`${finalAmount}`} secondary={
+          <FormControl size="small" variant="standard" sx={{ m: 1, minWidth: 120 }}>
+            <Select
+            id="token"
+            value={token}
+            sx={{
+              width: '80px',
+              border: 0,
+              fontSize: '14px'
+            }}
+            size="small"
+            onChange={(event) => {
+              setToken(event.target.value)
+            }}
+          >
+            <MenuItem value="MATIC">MATIC</MenuItem>
+            <MenuItem value="NCT">NCT</MenuItem>
+            </Select>
+          </FormControl>}
+        />
+      </ListItem>
+    </List>
+      </Stack>
+
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
+        <Button color="secondary"  variant="contained"onClick={payAmount} >Pay</Button>
+				{/* <ToastContainer /> */}
+        <Button color="secondary"  variant="contained" onClick={testToast} >Pledge</Button>
+				{/* <ToastContainer /> */}
+      </Stack>
+      <ToastContainer />
+      </Card>
+      </Grid>
+
+      <Grid item xs={10} lg={4} sm={10}>
         <Card
     sx={{
       p: 5,
@@ -289,9 +370,7 @@ export default function Form(props) {
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
         <Button color="secondary"  variant="contained"onClick={payAmount} >Pay</Button>
-				{/* <ToastContainer /> */}
         <Button color="secondary"  variant="contained" onClick={testToast} >Pledge</Button>
-				{/* <ToastContainer /> */}
       </Stack>
       <ToastContainer />
       </Card>
