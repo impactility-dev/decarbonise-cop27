@@ -45,7 +45,7 @@ const tokenDecimals = {
 export default function Form(props) {
   const navigate = useNavigate();
 
-	const contractAddress = '0xb05FF1e917Ce26cf03A1c45DE4A2976E1B1724F1';
+	const contractAddress = '0xFc94fC5ab006843EaC932d0b5B0534bc99069F6C';
 	const accountAddress = props.address;
   const [departure, setDeparture] = useState();
 	const [flightClass, setFlightClass] = useState('economy');
