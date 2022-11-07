@@ -178,7 +178,7 @@ export default function Form(props) {
       p: 5,
       pt: 1,
       m: 2,
-      boxShadow: '10px 5px 5px green',
+      boxShadow: '10px 5px 5px #79E8B9',
       // textAlign: 'center',
       // alignContent: 'center',
     }}
@@ -253,7 +253,7 @@ export default function Form(props) {
       p: 5,
       pt: 1,
       m: 2,
-      boxShadow: '10px 5px 5px blue',
+      boxShadow: '10px 5px 5px #6079E8',
     }}
   > 
     <h3>Offset Flight</h3>
