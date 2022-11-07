@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
-import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // @mui
-import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox, Autocomplete, Popper, Select, MenuItem,
-  Button, ButtonGroup, Card, Item, FormControl
+import { Stack, InputAdornment, TextField, Checkbox, Autocomplete, Popper, Select, MenuItem,
+  Button, ButtonGroup, Card, FormControl
 } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import { LoadingButton } from '@mui/lab';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 // components
@@ -18,9 +16,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
-import ImageIcon from '@mui/icons-material/Image';
-import WorkIcon from '@mui/icons-material/Work';
-import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 import Divider from '@mui/material/Divider';
 import FactoryIcon from '@mui/icons-material/Factory';
 import NavigationIcon from '@mui/icons-material/Navigation';
@@ -43,7 +38,6 @@ const tokenDecimals = {
 };
 
 export default function Form(props) {
-  const navigate = useNavigate();
 
 	const contractAddress = '0xFc94fC5ab006843EaC932d0b5B0534bc99069F6C';
 	const accountAddress = props.address;
@@ -185,7 +179,7 @@ export default function Form(props) {
     }}
   > 
     <h3>Configure Flight</h3>
-      <Stack spacing={4}>
+      <Stack spacing={5}>
       <Autocomplete
           sx={{ mt: 2 }}
           autoHighlight
@@ -225,7 +219,7 @@ export default function Form(props) {
         </Select>
       </Stack>
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mt: 4, mb: 5 }}>
         <p>RoundTrip</p>
         <Checkbox name="round-trip" label="Round Trip" checked={roundTrip} onChange={(event) => {
           setRoundTrip(!roundTrip)
@@ -319,7 +313,7 @@ export default function Form(props) {
     </List>
       </Stack>
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 6 }}>
         <Button color="offset"  variant="contained" onClick={payAmount}>Pay</Button>
 				{/* <ToastContainer /> */}
         <Button color="offset"  variant="contained" onClick={pledgeAmount} >Pledge</Button>

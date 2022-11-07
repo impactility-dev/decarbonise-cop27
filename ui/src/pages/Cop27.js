@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 // @mui
 import { styled } from '@mui/material/styles';
-import { useTheme } from '@emotion/react';
-import { Link, Container, Typography, Divider, Stack, Button, Card } from '@mui/material';
+import { Container, Typography, Button } from '@mui/material';
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
@@ -49,6 +48,7 @@ export default function Cop27() {
   const mdUp = useResponsive('up', 'md');
 
 	useEffect(() => {
+    document.body.style.backgroundImage = 'url(public/assets/images/covers/background.jpeg)'
     const { ethereum } = window;
     const checkMetamaskAvailability = async () => {
       if (!ethereum) {
@@ -99,6 +99,7 @@ export default function Cop27() {
     <>
       <Helmet>
         <title> Decarbonise COP27 </title>
+        <style>{`body { background: '../../public/assets/images/covers/background.jpeg'; }`}</style>
       </Helmet>
 			
       <StyledRoot>
@@ -138,10 +139,10 @@ export default function Cop27() {
           }}>
           
           </StyledContent> */}
-          <StyledContent>
-          <Typography variant="h4" align='center' sx={{ mt: 3, mb: 3, fontFamily: 'Helvetica'}}>
+          <Typography variant="h4" align='center' sx={{mt: 8, mb: -2, fontFamily: 'Helvetica'}}>
               Offset your COP27 Carbon Footprint
             </Typography>
+          <StyledContent>
             <Form address={accountAddress}/>
           </StyledContent>
          

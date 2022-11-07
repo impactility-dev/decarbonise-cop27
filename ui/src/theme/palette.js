@@ -1,4 +1,3 @@
-import { Flight } from '@mui/icons-material';
 import { alpha } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
