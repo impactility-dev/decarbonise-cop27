@@ -1,0 +1,57 @@
+name: Deploy Decarbonise COP 27 web app
+
+on:    
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+#         cache: 'npm'
+     
+    - name: Install dependencies
+      run: |
+       npm i --package-lock-only
+       npm ci
+       
+    
+    - name: Run Linter
+      run: npm run lint
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.SERVICE_USER_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.SERVICE_USER_SECRET_KEY }}
+        aws-region: ${{ env.AWS_REGION }} 
+
+    - name: Build
+      run: |
+        export NODE_OPTIONS="--max_old_space_size=4096"
+        npm run build
+    
+    - name: Push build to S3
+      run: |
+        aws s3 sync ./build s3://${{ secrets.S3_BUCKET }}
+    
+    - name: Create Invalidation
+      run: |
+        aws cloudfront create-invalidation \
+          --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+          --paths "/*"

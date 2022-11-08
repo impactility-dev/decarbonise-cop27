@@ -28,8 +28,7 @@ contract COP27_Offset_Pool is BaseRelayRecipient {
 		/// @notice sum of pledged carbon tokens
 		uint256 public totalCarbonPledged = 0;
     /// @notice Address to where all the contributions are sent to (to be offset manually later)
-		// TODO : change this to actual multisig address later 
-    address public poolingAddress = 0xC37861B48Ba866C3e3F8827a25c7a9F733E58BDD; // COP27 multisig
+    address public poolingAddress = 0x38515e69405866245Fc9778395dE7cecc999382A; // COP27 multisig
 
     address private sushiRouterAddress =
         0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506;
