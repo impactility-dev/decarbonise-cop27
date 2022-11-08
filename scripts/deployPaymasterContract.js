@@ -8,13 +8,13 @@ const hre = require("hardhat");
 
 async function main() {
 
-  const offsetContract = await hre.ethers.getContractFactory("COP27_Offset_Pool");
-  const offsetContractPool = await offsetContract.deploy();
+  const paymasterContract = await hre.ethers.getContractFactory("SingleRecipientPaymaster");
+  const paymasterCOP27 = await paymasterContract.deploy("0x4903Bc527FEEF092Ab0E1365531D73bfAEaE5F7c");
 
-  await offsetContractPool.deployed();
+  await paymasterCOP27.deployed();
 
   console.log(
-    `deployed to ${offsetContractPool.address}`
+    `deployed to ${paymasterCOP27.address}`
   );
 }
 

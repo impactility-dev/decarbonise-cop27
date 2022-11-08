@@ -41,6 +41,7 @@ export default function Form(props) {
 
 	const contractAddress = '0xFc94fC5ab006843EaC932d0b5B0534bc99069F6C';
 	const accountAddress = props.address;
+	const web3Instance = props.web3Instance;
   const [departure, setDeparture] = useState();
 	const [flightClass, setFlightClass] = useState('economy');
 	const [roundTrip, setRoundTrip] = useState(true);
@@ -87,13 +88,13 @@ export default function Form(props) {
 	}
 
 	const initContract = async() => {
-		const provider = new ethers.providers.Web3Provider(window.ethereum);
+		const provider = new ethers.providers.Web3Provider(web3Instance);
 		const offsetContract = new ethers.Contract(contractAddress, contract.abi, provider);
 		return offsetContract;
 	}
 
 	const initContractWithSigner = async() => {
-		const provider = new ethers.providers.Web3Provider(window.ethereum);
+		const provider = new ethers.providers.Web3Provider(web3Instance);
 		const offsetContract = new ethers.Contract(contractAddress, contract.abi, provider);
 		const offsetContractWithSigner = offsetContract.connect(provider.getSigner());
 		return offsetContractWithSigner;
