@@ -181,6 +181,7 @@ export default function Cop27() {
 
 	const disConnectWallet = async () => {
 		await web3Modal.clearCachedProvider();
+		window.localStorage.clear();
 		setAccountAddress('');
 		setIsConnected(false);
 		setShortAddress('');
