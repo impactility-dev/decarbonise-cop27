@@ -150,7 +150,11 @@ export default function Cop27() {
   };
 
   return (
-    <>
+    <div style={{
+			backgroundImage: "url(/assets/images/covers/cover.png)",
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover'
+		}}>
       <Helmet>
         <title> Decarbonise COP27 </title>
         <style>{`body { background: '../../public/assets/images/covers/background.jpeg'; }`}</style>
@@ -225,6 +229,6 @@ export default function Cop27() {
         </Container>
         
       </StyledRoot>
-    </>
+    </div>
   );
 }
