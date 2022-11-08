@@ -9,7 +9,7 @@ import useResponsive from '../hooks/useResponsive';
 // components
 // sections
 import { Form } from '../sections/cop27';
-
+import './main.css';
 // ----------------------------------------------------------------------
 
 const Web3Modal = window.Web3Modal.default;
@@ -68,9 +68,22 @@ const StyledContent = styled('div')(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   flexDirection: 'column',
-  padding: theme.spacing(12, 0),
+  padding: theme.spacing(6, 0),
 }));
 
+const styles = {
+  main: {
+    fontSize: "18px",
+    color: "#292b2c",
+    backgroundColor: "#fff",
+    padding: "0 20px"
+  },
+  wrapper: {
+    textAlign: "center",
+    margin: "0 auto",
+    marginTop: "50px"
+  }
+}
 // ----------------------------------------------------------------------
 
 export default function Cop27() {
@@ -174,11 +187,7 @@ export default function Cop27() {
   };
 
   return (
-    <div style={{
-			backgroundImage: "url(/assets/images/covers/cover.png)",
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: 'cover'
-		}}>
+    <div className="main">
       <Helmet>
         <title> Decarbonise COP27 </title>
       </Helmet>
@@ -236,13 +245,12 @@ export default function Cop27() {
 					)
 				}
         <Container maxWidth="lg">
-          {/* <StyledContent sx={{
-            minHeight: '5vh',
+          <StyledContent sx={{
+            minHeight: '0vh',
             mb: 0
-          }}>
+          }} />
           
-          </StyledContent> */}
-          <Typography variant="h4" align='center' sx={{mt: 8, mb: -2, fontFamily: 'Helvetica'}}>
+          <Typography variant="h4" align='center' sx={{mt: 0, mb: -2, fontFamily: 'Helvetica'}}>
               Offset your COP27 Carbon Footprint
             </Typography>
           <StyledContent>
