@@ -157,7 +157,6 @@ export default function Cop27() {
 		}}>
       <Helmet>
         <title> Decarbonise COP27 </title>
-        <style>{`body { background: '../../public/assets/images/covers/background.jpeg'; }`}</style>
       </Helmet>
 			
       <StyledRoot>
