@@ -63,7 +63,6 @@ export default function Cop27() {
   const mdUp = useResponsive('up', 'md');
 
 	useEffect(() => {
-    document.body.style.backgroundImage = 'url(public/assets/images/covers/background.jpeg)'
     const { ethereum } = window;
     const checkMetamaskAvailability = async () => {
       if (!ethereum) {
@@ -150,10 +149,13 @@ export default function Cop27() {
   };
 
   return (
-    <>
+    <div style={{
+			backgroundImage: "url(/assets/images/covers/cover.png)",
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover'
+		}}>
       <Helmet>
         <title> Decarbonise COP27 </title>
-        <style>{`body { background: '../../public/assets/images/covers/background.jpeg'; }`}</style>
       </Helmet>
 			
       <StyledRoot>
@@ -225,6 +227,6 @@ export default function Cop27() {
         </Container>
         
       </StyledRoot>
-    </>
+    </div>
   );
 }

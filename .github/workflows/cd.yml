@@ -29,10 +29,6 @@ jobs:
       run: |
        npm i --package-lock-only
        npm ci
-       
-    
-    - name: Run Linter
-      run: npm run lint
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
