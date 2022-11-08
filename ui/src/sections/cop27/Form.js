@@ -174,7 +174,7 @@ export default function Form(props) {
       pt: 1,
       m: 2,
       boxShadow: '10px 5px 5px #22D388',
-      height: "450px"
+      height: "460px"
       // textAlign: 'center',
       // alignContent: 'center',
     }}
@@ -250,7 +250,7 @@ export default function Form(props) {
       pt: 1,
       m: 2,
       boxShadow: '10px 5px 5px #6079E8',
-      height: "450px"
+      height: "460px"
     }}
   > 
     <h3>Offset Flight</h3>
@@ -331,7 +331,7 @@ export default function Form(props) {
 						pt: 1,
 						m: 2,
 						boxShadow: '10px 5px 5px #9289FF',
-            height: "450px"
+            height: "460px"
 					}}
 				> 
     <h3>Mint your POAP</h3>

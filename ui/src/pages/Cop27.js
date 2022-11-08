@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { Helmet } from 'react-helmet-async';
-// @mui
+import GitHubIcon from '@mui/icons-material/GitHub';
+import Tooltip from '@mui/material/Tooltip';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import { styled } from '@mui/material/styles';
-import { Link, Container, Typography, Divider, Stack, Button, Card, Modal, Box } from '@mui/material';
+import WavesIcon from '@mui/icons-material/Waves';
+import { Paper, Container, Typography, Link, Button, Card, Modal, Box } from '@mui/material';
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
@@ -71,19 +75,6 @@ const StyledContent = styled('div')(({ theme }) => ({
   padding: theme.spacing(6, 0),
 }));
 
-const styles = {
-  main: {
-    fontSize: "18px",
-    color: "#292b2c",
-    backgroundColor: "#fff",
-    padding: "0 20px"
-  },
-  wrapper: {
-    textAlign: "center",
-    margin: "0 auto",
-    marginTop: "50px"
-  }
-}
 // ----------------------------------------------------------------------
 
 export default function Cop27() {
@@ -261,6 +252,74 @@ export default function Cop27() {
         </Container>
         
       </StyledRoot>
+			<Paper sx={{marginTop: 'calc(10% + 0px)',
+				background: 'none',
+				border: 0,
+				width: '100%',
+				position: window.screen.width < 800 ? 'static' : 'sticky',
+				bottom: 0,
+			}} component="footer" square variant="outlined">
+				<Container maxWidth="lg">
+					<Box
+						sx={{
+							flexGrow: 1,
+							justifyContent: "left",
+							display: "flex",
+							flexWrap: "wrap",
+							my:1
+						}}
+					>
+						<Box
+							sx={{
+								flexGrow: 1,
+								justifyContent: "left",
+								display: "flex",
+								mb: 2,
+							}}
+						>
+						<Typography variant="caption" color="primary" sx={{
+							fontSize: window.screen.width < 650 ? '15px' : '20px',
+							color: 'white',
+							fontFace: 'Comic Sans'
+						}}>
+							<Link href="https://impact.club" target="_blank" style={{ textDecoration: 'none', color: 'white',
+							fontFace: 'Comic Sans' }}>
+								<img src="/assets/impactility.svg" alt="" height={window.screen.width < 650 ? "22px" : "30px"} width={window.screen.width < 650 ? "22px" : "30px"} display="inline" style={{ float: "left"}}/> &nbsp;Impact Club @ 2022
+							</Link>
+						</Typography>
+						</Box>
+						<Box
+							sx={{
+								flexGrow: 1,
+								justifyContent: "right",
+								display: "flex",
+								mb: 2,
+							}}
+						>
+							<Link href="https://github.com/impactility-dev/decarbonise-cop27" target="_blank">
+								<Tooltip title="Github" arrow>
+									<GitHubIcon sx={{ color: "white", fontSize: window.screen.width < 650 ? '25px' : '35px', mr: 1}} />
+								</Tooltip>
+							</Link>
+							<Link href="https://polygonscan.com/address/0x4903Bc527FEEF092Ab0E1365531D73bfAEaE5F7c" target="_blank">
+								<Tooltip title="Offset Contract" arrow>
+									<ReceiptLongIcon sx={{ color: "white", fontSize: window.screen.width < 650 ? '25px' : '35px', mr: 1}} />
+								</Tooltip>
+							</Link>
+							<Link href="https://polygonscan.com/address/0x38515e69405866245Fc9778395dE7cecc999382A" target="_blank">
+								<Tooltip title="Community Pool Contract" arrow>
+									<WavesIcon sx={{ color: "white", fontSize: window.screen.width < 650 ? '25px' : '35px', mr: 1}} />
+								</Tooltip>
+							</Link>
+							<Link href="https://twitter.com/ImpactClubWeb3" target="_blank">
+								<Tooltip title="Twitter" arrow>
+									<TwitterIcon sx={{ color: "white", fontSize: window.screen.width < 650 ? '25px' : '35px', mr: 1}} />
+								</Tooltip>
+							</Link>
+						</Box>
+					</Box>
+				</Container>
+    	</Paper>
     </div>
   );
 }
