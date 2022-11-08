@@ -1,8 +1,8 @@
 @media only screen and (min-width: 380px) and (max-width: 650px){
   .main {
     	background-image: url("../../public/assets/images/covers/cover-mobile.png");
-      /* background-repeat: no-repeat;
-      background-size: cover; */
+      background-repeat: no-repeat;
+      background-size: cover;
   }
 }
 @media only screen and (min-width: 651px) {
