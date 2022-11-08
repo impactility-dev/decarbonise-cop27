@@ -3,7 +3,6 @@ import { ethers } from 'ethers';
 import { Helmet } from 'react-helmet-async';
 // @mui
 import { styled } from '@mui/material/styles';
-import { useTheme } from '@emotion/react';
 import { Link, Container, Typography, Divider, Stack, Button, Card, Modal, Box } from '@mui/material';
 // hooks
 import useResponsive from '../hooks/useResponsive';
@@ -12,6 +11,28 @@ import useResponsive from '../hooks/useResponsive';
 import { Form } from '../sections/cop27';
 
 // ----------------------------------------------------------------------
+
+const Web3Modal = window.Web3Modal.default;
+const WalletConnectProvider = window.WalletConnectProvider.default;
+
+const providerOptions = {
+	walletconnect: {
+		package: WalletConnectProvider,
+		options: {
+			rpc: {
+				137: "https://polygon-rpc.com",
+			},
+		},
+	},
+}
+
+const web3Modal = new Web3Modal({
+	network: "matic", // optional
+	networkID: 137,
+	cacheProvider: false, // choose every time
+	providerOptions, // required
+	disableInjectedProvider: false, // For MetaMask / Brave / Opera.
+});
 
 const style = {
   position: 'absolute',
@@ -58,6 +79,7 @@ export default function Cop27() {
 	const [shortAddress, setShortAddress] = useState('');
   const [isConnected, setIsConnected] = useState(false);
 	const [networkChange, setNetworkChange] = useState(false);
+	const [web3Instance, setWeb3Instance] = useState({});
 
   const { ethereum } = window;
   const mdUp = useResponsive('up', 'md');
@@ -91,7 +113,7 @@ export default function Cop27() {
 	}
 	
 	const checkIfNetworkChanged = async () => {
-		const provider = new ethers.providers.Web3Provider(window.ethereum);
+		const provider = new ethers.providers.Web3Provider(web3Instance, "any");
 		provider.provider.on("chainChanged", (chainId) => {
 			console.log("chain Changed", chainId);
 			if (parseInt(chainId, 16) !== 137) {
@@ -102,7 +124,7 @@ export default function Cop27() {
 	
 
 	const checkIfNetworkCorrect = async () => {
-		const provider = new ethers.providers.Web3Provider(window.ethereum);
+		const provider = new ethers.providers.Web3Provider(web3Instance, "any");
 		const network = await provider.getNetwork();
 		if (network.chainId !== 137) {
 			setNetworkChange(true)
@@ -114,14 +136,16 @@ export default function Cop27() {
       if (!ethereum) {
         sethaveMetamask(false);
       }
-      const accounts = await ethereum.request({
-        method: 'eth_requestAccounts',
-      });
-      setAccountAddress(accounts[0]);
-			setShortAddress(`${accounts[0].slice(0,5)}...${accounts[0].slice(-4)}`);
-      setIsConnected(true);
-			const provider = new ethers.providers.Web3Provider(window.ethereum);
-			console.log(await provider.getNetwork())
+
+			const instance = await web3Modal.connect();
+			const provider = new ethers.providers.Web3Provider(instance, "any");
+			const signer = await provider.getSigner();
+			const address = await signer.getAddress();
+
+			setWeb3Instance(instance);
+			setAccountAddress(address);
+			setShortAddress(`${address.slice(0,5)}...${address.slice(-4)}`);
+      setIsConnected(true);			
 			checkIfNetworkCorrect();
     } catch (error) {
       setIsConnected(false);
@@ -134,7 +158,7 @@ export default function Cop27() {
 	};
 
 	const switchNetwork = async () => {
-		const provider = new ethers.providers.Web3Provider(window.ethereum);
+		const provider = new ethers.providers.Web3Provider(web3Instance, "any");
 		await provider.provider.request({
 			method: "wallet_switchEthereumChain",
 			params: [{ chainId: toHex(137) }],
@@ -143,6 +167,7 @@ export default function Cop27() {
 	}
 
 	const disConnectWallet = async () => {
+		await web3Modal.clearCachedProvider();
 		setAccountAddress('');
 		setIsConnected(false);
 		setShortAddress('');
@@ -221,7 +246,7 @@ export default function Cop27() {
               Offset your COP27 Carbon Footprint
             </Typography>
           <StyledContent>
-            <Form address={accountAddress}/>
+            <Form address={accountAddress} web3Instance={web3Instance}/>
           </StyledContent>
          
         </Container>
