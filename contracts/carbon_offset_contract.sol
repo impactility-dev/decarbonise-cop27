@@ -19,25 +19,30 @@ contract COP27_Offset_Pool is BaseRelayRecipient {
 		constructor(address forwarder) public {
 			_setTrustedForwarder(forwarder);
 		}
+
 		/// @notice Stores all contributions (summed up) for each address
     mapping(address => uint256) public contributions;
     /// @notice An array of addresses which have contributed
     address[] public contributorsAddresses;
     /// @notice Sum of all contributions
     uint256 public totalCarbonPooled = 0;
+
+		/// @notice Stores all contributions (summed up) for each address
+    mapping(address => uint256) public pledges;
+    /// @notice An array of addresses which have contributed
+    address[] public pledgersAddresses;
 		/// @notice sum of pledged carbon tokens
 		uint256 public totalCarbonPledged = 0;
-    /// @notice Address to where all the contributions are sent to (to be offset manually later)
+    
+		/// @notice Address to where all the contributions are sent to (to be offset manually later)
     address public poolingAddress = 0x38515e69405866245Fc9778395dE7cecc999382A; // COP27 multisig
-
-    address private sushiRouterAddress =
-        0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506;
+    address private sushiRouterAddress = 0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506;
     address private NCTAddress = 0xD838290e877E0188a4A44700463419ED96c16107;
     address private WMATICAddress = 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270;
     address private USDCAddress = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174;
 
     ///@notice Emitted after a pledge has been made to offset carbon emission
-    event OffsetPledgeCaptured(address pledger, bytes32 email, bytes8 dep, string token, uint256 carbonTokenPledged);
+    event OffsetPledgeCaptured(address pledger, string token, uint256 carbonTokenPledged);
 		
 		///@notice Emitted after carbon tokens have been sent to pooling address.
     event ContributionSent(string tokenOrCoin, uint256 carbonTokenContributed);
@@ -56,10 +61,20 @@ contract COP27_Offset_Pool is BaseRelayRecipient {
     /// @param email email of the entity/person pledging to offset their emissions
 		/// @param dep airport code of the departure
 		/// @param carbonTokenPledged amount of tCO2 the entity/person is pledging to offset
-		function capturePledge(bytes memory email, bytes8 dep, uint256 carbonTokenPledged) public {
-			totalCarbonPledged += carbonTokenPledged;
-			emit OffsetPledgeCaptured(_msgSender(), keccak256(email), dep, "NCT", carbonTokenPledged);
+		function capturePledge(uint256 amountPledged) public {
+			accountPledges(amountPledged);
+			emit OffsetPledgeCaptured(_msgSender(),"NCT", amountPledged);
 		}
+
+		/// @notice Does the accounting of pledges (storing addresses and values contributed).
+    /// @param amountPledged Amount of carbon tokens pledged.
+    function accountPledges(uint256 amountPledged) private {
+        totalCarbonPledged += amountPledged;
+        if (pledges[_msgSender()] == 0) {
+            pledgersAddresses.push(_msgSender());
+        }
+        pledges[_msgSender()] += amountPledged;
+    }
 
 		/// @notice returns total pledge amount upto that point
 		function getPledgeAmount() public view returns(uint256) {
