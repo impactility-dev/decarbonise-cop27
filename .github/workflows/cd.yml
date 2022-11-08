@@ -40,6 +40,10 @@ jobs:
         aws-secret-access-key: ${{ secrets.SERVICE_USER_SECRET_KEY }}
         aws-region: ${{ env.AWS_REGION }} 
 
+    - name: Unset CI
+      run: |
+        unset CI
+        
     - name: Build
       run: |
         export NODE_OPTIONS="--max_old_space_size=4096"
