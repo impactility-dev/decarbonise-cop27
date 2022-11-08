@@ -39,7 +39,7 @@ const tokenDecimals = {
 
 export default function Form(props) {
 
-	const contractAddress = '0xFc94fC5ab006843EaC932d0b5B0534bc99069F6C';
+	const contractAddress = '0x4903Bc527FEEF092Ab0E1365531D73bfAEaE5F7c';
 	const accountAddress = props.address;
 	const web3Instance = props.web3Instance;
   const [departure, setDeparture] = useState();
