@@ -63,7 +63,6 @@ export default function Cop27() {
   const mdUp = useResponsive('up', 'md');
 
 	useEffect(() => {
-    document.body.style.backgroundImage = 'url(public/assets/images/covers/background.jpeg)'
     const { ethereum } = window;
     const checkMetamaskAvailability = async () => {
       if (!ethereum) {
