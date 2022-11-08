@@ -54,13 +54,11 @@ contract COP27_Offset_Pool is BaseRelayRecipient {
     fallback() external payable {}
 
 		function versionRecipient() external override view returns (string memory) {
-			return "2.2.5";
+			return "2.2.5+opengsn.recipient.irelayrecipient";
 		}
 
 		/// @notice emits event to signify a pledge to emit carbon emissions
-    /// @param email email of the entity/person pledging to offset their emissions
-		/// @param dep airport code of the departure
-		/// @param carbonTokenPledged amount of tCO2 the entity/person is pledging to offset
+		/// @param amountPledged amount of tCO2 the entity/person is pledging to offset
 		function capturePledge(uint256 amountPledged) public {
 			accountPledges(amountPledged);
 			emit OffsetPledgeCaptured(_msgSender(),"NCT", amountPledged);
