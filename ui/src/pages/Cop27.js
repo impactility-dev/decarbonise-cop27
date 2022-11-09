@@ -127,9 +127,8 @@ export default function Cop27() {
 		})
 	}
 	
-
-	const checkIfNetworkCorrect = async () => {
-		const provider = new ethers.providers.Web3Provider(web3Instance, "any");
+	const checkIfNetworkCorrect = async (instance) => {
+		const provider = new ethers.providers.Web3Provider(instance, "any");
 		const network = await provider.getNetwork();
 		if (network.chainId !== 137) {
 			setNetworkChange(true)
@@ -151,7 +150,7 @@ export default function Cop27() {
 			setAccountAddress(address);
 			setShortAddress(`${address.slice(0,5)}...${address.slice(-4)}`);
       setIsConnected(true);			
-			checkIfNetworkCorrect();
+			checkIfNetworkCorrect(instance);
     } catch (error) {
       setIsConnected(false);
     }
