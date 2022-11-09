@@ -40,6 +40,8 @@ const tokenDecimals = {
 export default function Form(props) {
 
 	const contractAddress = '0x4903Bc527FEEF092Ab0E1365531D73bfAEaE5F7c';
+	const poapEventId = "81814";
+	const poapUrl = "https://poap.offset.cop27/";
 	const accountAddress = props.address;
 	const web3Instance = props.web3Instance;
   const [departure, setDeparture] = useState();
@@ -52,6 +54,8 @@ export default function Form(props) {
   const [token, setToken] = useState("MATIC");
 	const [mint, setMint] = useState(false);
 	const [nftStatus, setNFTStatus] = useState("Mint");
+	const [pay, setPay] = useState(false);
+	const [pledge, setPledge] = useState(false);
 	
 
 	useEffect(() => {
@@ -64,6 +68,7 @@ export default function Form(props) {
 		if (departure && flightClass && passengers) {
 		 getDetails(departure, roundTrip, flightClass, passengers)
 		}
+		console.log(accountAddress);
   }, [departure, flightClass, roundTrip, passengers]);
 
 	useEffect(() => {
@@ -76,6 +81,43 @@ export default function Form(props) {
 		}
   }, [token]);
 
+	useEffect(() => {
+		if (!accountAddress) { 
+			setPay(false);
+			setPledge(false);
+		} else if (accountAddress && finalAmount) {
+			setPay(true);
+			setPledge(true);
+		}
+  }, [accountAddress]);
+
+	const checkNFTStatus = async() => {
+  	const url = `${poapUrl}getCollectorStatus/${poapEventId}/${accountAddress}`;
+  	let response;
+		try {
+			response = await fetch(url, {
+				method: "GET",
+				mode: "cors",
+				headers: {
+					'Accept': 'application/json',
+				},
+			});
+
+		} catch (err) {
+			setMint(false);
+		}
+  
+		const getCollectorStatusResponse = await response.json();
+	
+		if (getCollectorStatusResponse.collector_status === "is_eligible") {
+			setMint(true);
+			setNFTStatus("Mint");
+		}
+		if (getCollectorStatusResponse.collector_status === "has_collected") {
+			setMint(false);
+			setNFTStatus("Collected");
+		}
+	}
 
   const handleIncrement = () => {
 		const counter = passengers + 1
@@ -114,7 +156,12 @@ export default function Form(props) {
     	amount = new BigNumber(amount, tokenDecimals.MATIC);
 			finalAmount =  new BigNumber(1.01 * amount?.asFloat(), tokenDecimals.MATIC);
 		}
+
     setFinalAmount(finalAmount?.asFloat());
+		if(accountAddress) {
+			setPay(true);
+			setPledge(true);
+		}
 	}
 
   const infoToast = (transaction) => (
@@ -341,9 +388,9 @@ export default function Form(props) {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 6 }}>
-        <Button color="offset"  variant="contained" onClick={payAmount}>Pay</Button>
+        <Button color="offset"  variant="contained" onClick={payAmount} disabled={!pay}>Pay</Button>
 				{/* <ToastContainer /> */}
-        <Button color="offset"  variant="contained" onClick={pledgeAmount}>Pledge</Button>
+        <Button color="offset"  variant="contained" onClick={pledgeAmount} disabled={!pledge}>Pledge</Button>
 				{/* <ToastContainer /> */}
       </Stack>
       <ToastContainer />
