@@ -53,7 +53,7 @@ contract COP27_Offset_Pool is BaseRelayRecipient {
     ///@dev Needed, otherwise uniswap router for matic fails
     fallback() external payable {}
 
-		function versionRecipient() external override view returns (string memory) {
+		function versionRecipient() external override pure returns (string memory) {
 			return "2.2.5+opengsn.recipient.irelayrecipient";
 		}
 
@@ -77,6 +77,16 @@ contract COP27_Offset_Pool is BaseRelayRecipient {
 		/// @notice returns total pledge amount upto that point
 		function getPledgeAmount() public view returns(uint256) {
 			return totalCarbonPledged;
+		}
+
+		/// @notice returns list of all contributors
+		function getContributors() public view returns(address[] memory) {
+			return contributorsAddresses;
+		}
+
+		/// @notice returns list of all contributors
+		function getPledgers() public view returns(address[] memory) {
+			return pledgersAddresses;
 		}
 
     /// @notice Receives Matic, swaps to carbon token and forwards the swapped
