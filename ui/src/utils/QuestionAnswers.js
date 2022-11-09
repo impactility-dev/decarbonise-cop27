@@ -19,7 +19,21 @@ export const questions = [
 					Step 4: Choose between contributing or pledging to offset your emissions.
 				</Typography>
 				<Typography paragraph>
-					Step 5: Mint your Decarbonise COP 27 POAP!
+					Step 5: Receive your Decarbonise COP 27 POAP
+				</Typography>
+				<Typography paragraph>
+					Step 6: Vote for a project using your POAP
+				</Typography>
+			</>
+		)
+	},
+	{
+		"question": "When will I receive my Decarbonise COP 27 POAP?",
+		"answer": () => (
+			<>
+				<Typography paragraph>
+				We will start air dropping POAPs into user's wallets from Sunday, 13th November 2022.
+				You can visit <a rel="noreferrer" href="https://cop27.impact.club/" target="_blank">cop27.impact.club</a>, click on “Connect” in the top right corner and then click on “My POAPs”.  Alternatively, you can visit <a rel="noreferrer" href="https://app.poap.xyz/" target="_blank">app.poap.xyz</a> to check your POAPs.
 				</Typography>
 			</>
 		)
@@ -83,12 +97,12 @@ export const questions = [
 		)
 	},
 	{
-		"question": "What is the difference between paying and pledging to offset your carbon emissions?",
+		"question": "What is the difference between contributing and pledging to offset your carbon emissions?",
 		"answer": () => (
 			<>
 				<Typography paragraph>
-					Contributing allows you to pay for the offsets yourself while pledging lets 
-					a sponsoring organisation pay on your behalf.
+					Paying, as the name suggests, allows you to pay for the offsets yourself while pledging lets a sponsoring organisation pay on your behalf.
+					Pledgers have to pay a nominal amount of gas fee for executing their transaction. You can read more about it <a rel="noreferrer" href="https://ethereum.org/en/developers/docs/gas/" target="_blank">here</a>.
 				</Typography>
 			</>
 		)
@@ -108,7 +122,7 @@ export const questions = [
 		"answer": () => (
 			<>
 				<Typography paragraph>
-					You can find the source code on <a rel="noreferrer" href="https://github.com/impactility-dev/decarbonise-cop27" target="_blank">GitHub Repository</a>.
+					You can find the source code on our <a rel="noreferrer" href="https://github.com/impactility-dev/decarbonise-cop27" target="_blank">GitHub Repository</a> or on <a rel="noreferrer" href="https://polygonscan.com/address/0xED74a2981598EA6B6BB94C87a00fa91d0f9991FF" target="_blank">PolygonScan</a>.
 				</Typography>
 			</>
 		)

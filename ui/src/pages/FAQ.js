@@ -112,7 +112,7 @@ export default function FAQ() {
 									<GitHubIcon sx={{ color: "white", fontSize: window.screen.width < 800 ? '25px' : '35px', mr: 1}} />
 								</Tooltip>
 							</Link>
-							<Link href="https://polygonscan.com/address/0x4903Bc527FEEF092Ab0E1365531D73bfAEaE5F7c" target="_blank">
+							<Link href="https://polygonscan.com/address/0xED74a2981598EA6B6BB94C87a00fa91d0f9991FF" target="_blank">
 								<Tooltip title="Offset Contract" arrow>
 									<ReceiptLongIcon sx={{ color: "white", fontSize: window.screen.width < 800 ? '25px' : '35px', mr: 1}} />
 								</Tooltip>

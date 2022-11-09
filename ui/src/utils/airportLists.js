@@ -12170,11 +12170,6 @@ export const airports = [
     "Longitude": 8.708720207
   },
   {
-    "Name": "SSH, Sharm El Sheikh International Airport, Sharm el-Sheikh, Egypt",
-    "Latitude": 27.977301,
-    "Longitude": 34.395
-  },
-  {
     "Name": "SSJ, Sandnessjøen Airport  Stokka, Alstahaug, Norway",
     "Latitude": 65.956802,
     "Longitude": 12.4689
