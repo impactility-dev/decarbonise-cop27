@@ -39,9 +39,7 @@ const tokenDecimals = {
 
 export default function Form(props) {
 
-	const contractAddress = '0x4903Bc527FEEF092Ab0E1365531D73bfAEaE5F7c';
-	const poapEventId = "81814";
-	const poapUrl = "https://poap.offset.cop27/";
+	const contractAddress = '0xED74a2981598EA6B6BB94C87a00fa91d0f9991FF';
 	const accountAddress = props.address;
 	const web3Instance = props.web3Instance;
   const [departure, setDeparture] = useState();
@@ -52,8 +50,6 @@ export default function Form(props) {
 	const [flightEmission, setFlightEmission] = useState();
   const [finalAmount, setFinalAmount] = useState(0);
   const [token, setToken] = useState("MATIC");
-	const [mint, setMint] = useState(false);
-	const [nftStatus, setNFTStatus] = useState("Mint");
 	const [pay, setPay] = useState(false);
 	const [pledge, setPledge] = useState(false);
 	
@@ -89,34 +85,6 @@ export default function Form(props) {
 			setPledge(true);
 		}
   }, [accountAddress]);
-
-	const checkNFTStatus = async() => {
-  	const url = `${poapUrl}getCollectorStatus/${poapEventId}/${accountAddress}`;
-  	let response;
-		try {
-			response = await fetch(url, {
-				method: "GET",
-				mode: "cors",
-				headers: {
-					'Accept': 'application/json',
-				},
-			});
-
-		} catch (err) {
-			setMint(false);
-		}
-  
-		const getCollectorStatusResponse = await response.json();
-	
-		if (getCollectorStatusResponse.collector_status === "is_eligible") {
-			setMint(true);
-			setNFTStatus("Mint");
-		}
-		if (getCollectorStatusResponse.collector_status === "has_collected") {
-			setMint(false);
-			setNFTStatus("Collected");
-		}
-	}
 
   const handleIncrement = () => {
 		const counter = passengers + 1
@@ -203,7 +171,6 @@ export default function Form(props) {
 			theme: "light",
 		});
 
-		setMint(true);
 	};
 
 	const payAmount = async () => {
@@ -240,7 +207,6 @@ export default function Form(props) {
 			theme: "light",
 		});
 
-		setMint(true);
 	}
 
 
@@ -413,14 +379,13 @@ export default function Form(props) {
             height: "460px"
 					}}
 				> 
-    <h3>Mint your POAP</h3>
+    <h3>POAP</h3>
       <Stack spacing={6} alignItems="center">
 				<img src='/assets/cop27-poap-1.png' alt="POAP art work" width="60%" height="60%" />
 				<br/>This POAP will enable you to vote on a nature conservation project. Participants will be notified about the vote on poap.vote shortly after COP 27<br/>
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <Button color="poap"  variant="contained" onClick={payAmount} disabled={!mint}>{nftStatus}</Button>
         <Button color="poap"  variant="contained" target="_blank" href={`https://app.poap.xyz/scan/${accountAddress}`} disabled={!accountAddress}>My POAPs</Button>
       </Stack>
       <ToastContainer />
