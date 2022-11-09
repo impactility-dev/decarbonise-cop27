@@ -1,7 +1,7 @@
 import Grid from '@mui/material/Grid';
 import * as React from 'react';
 import FAQCard from './Card';
-import { questions } from './QuestionAnswers';
+import { questions } from '../../utils/QuestionAnswers';
 
 export default function FAQPage() {
 
