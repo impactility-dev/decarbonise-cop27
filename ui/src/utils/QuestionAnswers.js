@@ -2,6 +2,29 @@ import Typography from '@mui/material/Typography';
 
 export const questions = [
 	{
+		"question": "How can you offset your COP 27 flights using Impact Club?",
+		"answer": () => (
+			<>
+				<Typography paragraph>
+					Step 1: You can start by clicking <a rel="noreferrer" href="http://cop27.impact.club/" target="_blank">here</a>.
+				</Typography>
+				<Typography paragraph>
+					Step 2: Select the airport, travel class and number of passengers you would like to offset for.
+				</Typography>
+				<Typography paragraph>
+					Step 3: Connect your web3 wallet. The most widely used wallet is Metamask.
+					<br />To set up your Metamask wallet you can follow the steps <a rel="noreferrer" href="https://metamask.zendesk.com/hc/en-us/articles/360015489531-Getting-started-with-MetaMask" target="_blank">here</a>.
+				</Typography>
+				<Typography paragraph>
+					Step 4: Choose between contributing or pledging to offset your emissions.
+				</Typography>
+				<Typography paragraph>
+					Step 5: Mint your Decarbonise COP 27 POAP!
+				</Typography>
+			</>
+		)
+	},
+	{
 		"question": "What does offsetting your carbon emissions mean?",
 		"answer": () => (
 			<>
@@ -55,29 +78,6 @@ export const questions = [
 				<Typography paragraph>
 					tCO2 stands for “tonnes of carbon dioxide” which indicates the amount of carbon dioxide that 
 					needs to be compensated so that the flight has zero impact on the climate.
-				</Typography>
-			</>
-		)
-	},
-	{
-		"question": "How can you offset your COP 27 flights using Impact Club?",
-		"answer": () => (
-			<>
-				<Typography paragraph>
-					Step 1: You can start by clicking <a rel="noreferrer" href="http://cop27.impact.club/" target="_blank">here</a>.
-				</Typography>
-				<Typography paragraph>
-					Step 2: Select the airport, travel class and number of passengers you would like to offset for.
-				</Typography>
-				<Typography paragraph>
-					Step 3: Connect your web3 wallet. The most widely used wallet is Metamask.
-					<br />To set up your Metamask wallet you can follow the steps <a rel="noreferrer" href="https://metamask.zendesk.com/hc/en-us/articles/360015489531-Getting-started-with-MetaMask" target="_blank">here</a>.
-				</Typography>
-				<Typography paragraph>
-					Step 4: Choose between contributing or pledging to offset your emissions.
-				</Typography>
-				<Typography paragraph>
-					Step 5: Mint your Decarbonise COP 27 POAP!
 				</Typography>
 			</>
 		)
@@ -223,7 +223,7 @@ export const questions = [
 		)
 	},
 	{
-		"question": "How can you support us?",
+		"question": "How can you support or reach out to us?",
 		"answer": () => (
 			<>
 				<Typography paragraph>
@@ -231,15 +231,5 @@ export const questions = [
 				</Typography>
 			</>
 		)
-	},
-	{
-		"question": "How can you contact Impact Club?",
-		"answer": () => (
-			<>
-				<Typography paragraph>
-					Feel free to drop us a message on <a rel="noreferrer" href="https://twitter.com/ImpactClubWeb3" target="_blank">Twitter</a> or email us on impactclub@impact.club
-				</Typography>
-			</>
-		)
-	},
+	}
 ]

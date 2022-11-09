@@ -29,7 +29,7 @@ export default function FAQCard(props) {
   };
 
   return (
-    <Card sx={{ maxWidth: 800, p: 1, }}>
+    <Card sx={{ maxWidth: 800, }} onClick={() => setExpanded(!expanded)}>
       <CardHeader
         action={
           <ExpandMore
