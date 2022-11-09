@@ -10,6 +10,7 @@ import Page404 from './pages/Page404';
 // import ProductsPage from './pages/ProductsPage';
 // import DashboardAppPage from './pages/DashboardAppPage';
 import Cop27 from './pages/Cop27';
+import FAQ from './pages/FAQ';
 
 // ----------------------------------------------------------------------
 
@@ -18,6 +19,10 @@ export default function Router() {
     {
       path:'/',
       element: <Cop27 />
+    },
+    {
+      path: '/faq',
+      element: <FAQ/>
     },
     // {
     //   path: '/dashboard',
