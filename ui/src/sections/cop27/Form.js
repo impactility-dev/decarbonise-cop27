@@ -174,9 +174,7 @@ export default function Form(props) {
       pt: 1,
       m: 2,
       boxShadow: '10px 5px 5px #22D388',
-      height: "460px"
-      // textAlign: 'center',
-      // alignContent: 'center',
+      height: "460px",
     }}
   > 
     <h3>Configure Flight</h3>

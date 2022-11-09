@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
+import { Link as RouterLink } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import Tooltip from '@mui/material/Tooltip';
@@ -7,7 +8,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import { styled } from '@mui/material/styles';
 import WavesIcon from '@mui/icons-material/Waves';
-import { Paper, Container, Typography, Link, Button, Card, Modal, Box } from '@mui/material';
+import { Paper, Container, Typography, Link, Button, Modal, Box } from '@mui/material';
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
@@ -207,6 +208,17 @@ export default function Cop27() {
 					</Button>
 				</Box>
 			</Modal>
+			<Link to="/faq" component={RouterLink}>
+					<Button sx={{
+						position: 'absolute',
+						top: { xs: 16, sm: 24, md: 40 },
+						left: { xs: 16, sm: 24, md: 40 },
+						}}
+					variant="text" 
+					>
+						FAQs
+					</Button>
+			</Link>
       <Typography sx={{
 					position: 'absolute',
 					top: { xs: 20, sm: 30, md: 45},
@@ -278,13 +290,13 @@ export default function Cop27() {
 							}}
 						>
 						<Typography variant="caption" color="primary" sx={{
-							fontSize: window.screen.width < 650 ? '15px' : '20px',
+							fontSize: window.screen.width < 800 ? '15px' : '20px',
 							color: 'white',
 							fontFace: 'Comic Sans'
 						}}>
 							<Link href="https://impact.club" target="_blank" style={{ textDecoration: 'none', color: 'white',
 							fontFace: 'Comic Sans' }}>
-								<img src="/assets/impactility.svg" alt="" height={window.screen.width < 650 ? "22px" : "30px"} width={window.screen.width < 650 ? "22px" : "30px"} display="inline" style={{ float: "left"}}/> &nbsp;Impact Club @ 2022
+								<img src="/assets/impactility.svg" alt="" height={window.screen.width < 800 ? "22px" : "30px"} width={window.screen.width < 800 ? "22px" : "30px"} display="inline" style={{ float: "left"}}/> &nbsp;Impact Club @ 2022
 							</Link>
 						</Typography>
 						</Box>
@@ -298,22 +310,22 @@ export default function Cop27() {
 						>
 							<Link href="https://github.com/impactility-dev/decarbonise-cop27" target="_blank">
 								<Tooltip title="Github" arrow>
-									<GitHubIcon sx={{ color: "white", fontSize: window.screen.width < 650 ? '25px' : '35px', mr: 1}} />
+									<GitHubIcon sx={{ color: "white", fontSize: window.screen.width < 800 ? '25px' : '35px', mr: 1}} />
 								</Tooltip>
 							</Link>
 							<Link href="https://polygonscan.com/address/0x4903Bc527FEEF092Ab0E1365531D73bfAEaE5F7c" target="_blank">
 								<Tooltip title="Offset Contract" arrow>
-									<ReceiptLongIcon sx={{ color: "white", fontSize: window.screen.width < 650 ? '25px' : '35px', mr: 1}} />
+									<ReceiptLongIcon sx={{ color: "white", fontSize: window.screen.width < 800 ? '25px' : '35px', mr: 1}} />
 								</Tooltip>
 							</Link>
 							<Link href="https://polygonscan.com/address/0x38515e69405866245Fc9778395dE7cecc999382A" target="_blank">
 								<Tooltip title="Community Pool Contract" arrow>
-									<WavesIcon sx={{ color: "white", fontSize: window.screen.width < 650 ? '25px' : '35px', mr: 1}} />
+									<WavesIcon sx={{ color: "white", fontSize: window.screen.width < 800 ? '25px' : '35px', mr: 1}} />
 								</Tooltip>
 							</Link>
 							<Link href="https://twitter.com/ImpactClubWeb3" target="_blank">
 								<Tooltip title="Twitter" arrow>
-									<TwitterIcon sx={{ color: "white", fontSize: window.screen.width < 650 ? '25px' : '35px', mr: 1}} />
+									<TwitterIcon sx={{ color: "white", fontSize: window.screen.width < 800 ? '25px' : '35px', mr: 1}} />
 								</Tooltip>
 							</Link>
 						</Box>
