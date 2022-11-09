@@ -354,7 +354,7 @@ export default function Form(props) {
             <FactoryIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary={`${flightEmission?.asFloat() * passengers || '---'} tCO2`} secondary="Emissions" />
+        <ListItemText primary={`${flightEmission ? (flightEmission?.asFloat() * passengers).toFixed(4) : '---'} tCO2`} secondary="Emissions" />
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
@@ -363,7 +363,7 @@ export default function Form(props) {
             <MoneyIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary={`${finalAmount}`} secondary={
+        <ListItemText primary={`${finalAmount ? finalAmount.toFixed(4) : '---'}`} secondary={
           <FormControl size="small" variant="standard" sx={{ m: 1, minWidth: 120 }}>
             <Select
             id="token"
