@@ -74,7 +74,7 @@ export const questions = [
 					<br />To set up your Metamask wallet you can follow the steps <a rel="noreferrer" href="https://metamask.zendesk.com/hc/en-us/articles/360015489531-Getting-started-with-MetaMask" target="_blank">here</a>.
 				</Typography>
 				<Typography paragraph>
-					Step 4: Choose between paying or pledging to offset your emissions.
+					Step 4: Choose between contributing or pledging to offset your emissions.
 				</Typography>
 				<Typography paragraph>
 					Step 5: Mint your Decarbonise COP 27 POAP!
@@ -87,7 +87,7 @@ export const questions = [
 		"answer": () => (
 			<>
 				<Typography paragraph>
-					Paying, as the name suggests, allows you to pay for the offsets yourself while pledging lets 
+					Contributing allows you to pay for the offsets yourself while pledging lets 
 					a sponsoring organisation pay on your behalf.
 				</Typography>
 			</>

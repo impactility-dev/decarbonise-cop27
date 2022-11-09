@@ -388,7 +388,7 @@ export default function Form(props) {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 6 }}>
-        <Button color="offset"  variant="contained" onClick={payAmount} disabled={!pay}>Pay</Button>
+        <Button color="offset"  variant="contained" onClick={payAmount} disabled={!pay}>Contribute</Button>
 				{/* <ToastContainer /> */}
         <Button color="offset"  variant="contained" onClick={pledgeAmount} disabled={!pledge}>Pledge</Button>
 				{/* <ToastContainer /> */}
