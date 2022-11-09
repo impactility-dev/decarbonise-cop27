@@ -51,6 +51,8 @@ export default function Form(props) {
   const [finalAmount, setFinalAmount] = useState(0);
   const [token, setToken] = useState("MATIC");
 	const [mint, setMint] = useState(false);
+	const [nftStatus, setNFTStatus] = useState("Mint");
+	
 
 	useEffect(() => {
     async function getDetails(departure, roundTrip, flightClass, passengers) {
@@ -127,9 +129,35 @@ export default function Form(props) {
     </div>
   );
 
-	const pledgeAmount = () => (
-    console.log('yet to implement')
-  );
+	const pledgeAmount = async () => {
+    const pledgeValue = flightEmission;
+		const contract = await initContractWithSigner();
+		const transaction = await contract.capturePledge(pledgeValue.asBigNumber(), {gasLimit: 10000});
+
+		toast.info(infoToast(transaction), {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "light",
+		});
+
+		await transaction.wait();
+
+		toast.success(successToast(transaction), {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false, 
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "light",
+		});
+
+		setMint(true);
+	};
 
 	const payAmount = async () => {
     await calculateOffsetAmount(passengers, flightEmission);
@@ -315,7 +343,7 @@ export default function Form(props) {
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 6 }}>
         <Button color="offset"  variant="contained" onClick={payAmount}>Pay</Button>
 				{/* <ToastContainer /> */}
-        <Button color="offset"  variant="contained" onClick={pledgeAmount} >Pledge</Button>
+        <Button color="offset"  variant="contained" onClick={pledgeAmount}>Pledge</Button>
 				{/* <ToastContainer /> */}
       </Stack>
       <ToastContainer />
@@ -339,7 +367,7 @@ export default function Form(props) {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <Button color="poap"  variant="contained" onClick={payAmount} disabled={!mint}>Mint</Button>
+        <Button color="poap"  variant="contained" onClick={payAmount} disabled={!mint}>{nftStatus}</Button>
         <Button color="poap"  variant="contained" target="_blank" href={`https://app.poap.xyz/scan/${accountAddress}`} disabled={!accountAddress}>My POAPs</Button>
       </Stack>
       <ToastContainer />
