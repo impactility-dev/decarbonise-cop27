@@ -40,6 +40,8 @@ const tokenDecimals = {
 export default function Form(props) {
 
 	const contractAddress = '0x4903Bc527FEEF092Ab0E1365531D73bfAEaE5F7c';
+	const poapEventId = "81814";
+	const poapUrl = "https://poap.offset.cop27/";
 	const accountAddress = props.address;
 	const web3Instance = props.web3Instance;
   const [departure, setDeparture] = useState();
@@ -51,6 +53,10 @@ export default function Form(props) {
   const [finalAmount, setFinalAmount] = useState(0);
   const [token, setToken] = useState("MATIC");
 	const [mint, setMint] = useState(false);
+	const [nftStatus, setNFTStatus] = useState("Mint");
+	const [pay, setPay] = useState(false);
+	const [pledge, setPledge] = useState(false);
+	
 
 	useEffect(() => {
     async function getDetails(departure, roundTrip, flightClass, passengers) {
@@ -62,6 +68,7 @@ export default function Form(props) {
 		if (departure && flightClass && passengers) {
 		 getDetails(departure, roundTrip, flightClass, passengers)
 		}
+		console.log(accountAddress);
   }, [departure, flightClass, roundTrip, passengers]);
 
 	useEffect(() => {
@@ -74,6 +81,43 @@ export default function Form(props) {
 		}
   }, [token]);
 
+	useEffect(() => {
+		if (!accountAddress) { 
+			setPay(false);
+			setPledge(false);
+		} else if (accountAddress && finalAmount) {
+			setPay(true);
+			setPledge(true);
+		}
+  }, [accountAddress]);
+
+	const checkNFTStatus = async() => {
+  	const url = `${poapUrl}getCollectorStatus/${poapEventId}/${accountAddress}`;
+  	let response;
+		try {
+			response = await fetch(url, {
+				method: "GET",
+				mode: "cors",
+				headers: {
+					'Accept': 'application/json',
+				},
+			});
+
+		} catch (err) {
+			setMint(false);
+		}
+  
+		const getCollectorStatusResponse = await response.json();
+	
+		if (getCollectorStatusResponse.collector_status === "is_eligible") {
+			setMint(true);
+			setNFTStatus("Mint");
+		}
+		if (getCollectorStatusResponse.collector_status === "has_collected") {
+			setMint(false);
+			setNFTStatus("Collected");
+		}
+	}
 
   const handleIncrement = () => {
 		const counter = passengers + 1
@@ -112,7 +156,12 @@ export default function Form(props) {
     	amount = new BigNumber(amount, tokenDecimals.MATIC);
 			finalAmount =  new BigNumber(1.01 * amount?.asFloat(), tokenDecimals.MATIC);
 		}
+
     setFinalAmount(finalAmount?.asFloat());
+		if(accountAddress) {
+			setPay(true);
+			setPledge(true);
+		}
 	}
 
   const infoToast = (transaction) => (
@@ -127,9 +176,35 @@ export default function Form(props) {
     </div>
   );
 
-	const pledgeAmount = () => (
-    console.log('yet to implement')
-  );
+	const pledgeAmount = async () => {
+    const pledgeValue = flightEmission;
+		const contract = await initContractWithSigner();
+		const transaction = await contract.capturePledge(pledgeValue.asBigNumber(), {gasLimit: 10000});
+
+		toast.info(infoToast(transaction), {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "light",
+		});
+
+		await transaction.wait();
+
+		toast.success(successToast(transaction), {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false, 
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "light",
+		});
+
+		setMint(true);
+	};
 
 	const payAmount = async () => {
     await calculateOffsetAmount(passengers, flightEmission);
@@ -313,9 +388,9 @@ export default function Form(props) {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 6 }}>
-        <Button color="offset"  variant="contained" onClick={payAmount}>Pay</Button>
+        <Button color="offset"  variant="contained" onClick={payAmount} disabled={!pay}>Pay</Button>
 				{/* <ToastContainer /> */}
-        <Button color="offset"  variant="contained" onClick={pledgeAmount} >Pledge</Button>
+        <Button color="offset"  variant="contained" onClick={pledgeAmount} disabled={!pledge}>Pledge</Button>
 				{/* <ToastContainer /> */}
       </Stack>
       <ToastContainer />
@@ -339,7 +414,7 @@ export default function Form(props) {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <Button color="poap"  variant="contained" onClick={payAmount} disabled={!mint}>Mint</Button>
+        <Button color="poap"  variant="contained" onClick={payAmount} disabled={!mint}>{nftStatus}</Button>
         <Button color="poap"  variant="contained" target="_blank" href={`https://app.poap.xyz/scan/${accountAddress}`} disabled={!accountAddress}>My POAPs</Button>
       </Stack>
       <ToastContainer />

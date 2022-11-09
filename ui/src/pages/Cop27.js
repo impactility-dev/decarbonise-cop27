@@ -254,7 +254,7 @@ export default function Cop27() {
             mb: 0
           }} />
           
-          <Typography variant="h4" align='center' sx={{mt: 0, mb: -2, fontFamily: 'Helvetica'}}>
+          <Typography variant="h2" align='center' sx={{mt: 0, mb: -7, fontFamily: 'Helvetica'}}>
               Offset your COP27 Carbon Footprint
             </Typography>
           <StyledContent>
