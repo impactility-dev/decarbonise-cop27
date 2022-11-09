@@ -63,12 +63,11 @@ export default function Form(props) {
       const data = await calculateFlightDistance(departure, roundTrip, flightClass);
       setFlightDistance(data.distance);
       setFlightEmission(data.emission);
-      calculateOffsetAmount(passengers, data.emission)
+      calculateOffsetAmount(passengers, data.emission);
     }
 		if (departure && flightClass && passengers) {
 		 getDetails(departure, roundTrip, flightClass, passengers)
 		}
-		console.log(accountAddress);
   }, [departure, flightClass, roundTrip, passengers]);
 
 	useEffect(() => {
@@ -148,6 +147,7 @@ export default function Form(props) {
 		let finalAmount;
 		const paymentToken = token;
 		const value = new BigNumber(flightEmission?.asFloat() * passengers);
+		
 		if (paymentToken === "NCT") {
 			finalAmount = value;
 		} else {
@@ -210,7 +210,13 @@ export default function Form(props) {
     await calculateOffsetAmount(passengers, flightEmission);
     const paymentValue = new BigNumber(finalAmount);
 		const contract = await initContractWithSigner();
-		const transaction = await contract.participateWithMatic(paymentValue.asBigNumber(), {value: paymentValue.asBigNumber(), gasLimit: 30000});
+		let transaction;
+
+		if (token === "NCT") {
+			transaction = await contract.participateWithToken(addresses.NCT, paymentValue.asBigNumber(), {gasLimit: 30000});
+		} else {
+			transaction = await contract.participateWithMatic(paymentValue.asBigNumber(), {value: paymentValue.asBigNumber(), gasLimit: 30000});
+		}
 
 		toast.info(infoToast(transaction), {
 			position: "top-right",

@@ -163,10 +163,28 @@ export default function Cop27() {
 
 	const switchNetwork = async () => {
 		const provider = new ethers.providers.Web3Provider(web3Instance, "any");
-		await provider.provider.request({
-			method: "wallet_switchEthereumChain",
-			params: [{ chainId: toHex(137) }],
-		});
+		try {
+			await provider.provider.request({
+				method: "wallet_switchEthereumChain",
+				params: [{ chainId: toHex(137) }],
+			});
+		} catch(err) {
+			await provider.provider.request({
+				method: "wallet_addEthereumChain",
+				params: [{
+					chainId: toHex(137),
+					chainName: 'Polygon Mainnet',
+					nativeCurrency: {
+							name: 'MATIC',
+							symbol: 'MATIC',
+							decimals: 18
+					},
+					rpcUrls: ['https://rpc-mainnet.matic.network'],
+					blockExplorerUrls: ['https://polygonscan.com']
+					}],
+			});
+		}
+
 		setNetworkChange(false);
 	}
 
