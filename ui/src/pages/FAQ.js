@@ -67,7 +67,7 @@ export default function FAQ() {
 				background: 'none',
 				border: 0,
 				width: '100%',
-				position: window.screen.width < 800 ? 'static' : 'sticky',
+				position: 'static',
 				bottom: 0,
 			}} component="footer" square variant="outlined">
 				<Container maxWidth="lg">
