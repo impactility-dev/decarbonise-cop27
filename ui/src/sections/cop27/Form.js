@@ -147,7 +147,7 @@ export default function Form(props) {
 	const pledgeAmount = async () => {
     const pledgeValue = flightEmission;
 		const contract = await initContractWithSigner();
-		const transaction = await contract.capturePledge(pledgeValue.asBigNumber(), {gasLimit: 10000});
+		const transaction = await contract.capturePledge(pledgeValue.asBigNumber(), {gasLimit: 600000});
 
 		toast.info(infoToast(transaction), {
 			position: "top-right",
@@ -180,9 +180,9 @@ export default function Form(props) {
 		let transaction;
 
 		if (token === "NCT") {
-			transaction = await contract.participateWithToken(addresses.NCT, paymentValue.asBigNumber(), {gasLimit: 30000});
+			transaction = await contract.participateWithToken(addresses.NCT, paymentValue.asBigNumber(), {gasLimit: 5000000});
 		} else {
-			transaction = await contract.participateWithMatic(paymentValue.asBigNumber(), {value: paymentValue.asBigNumber(), gasLimit: 30000});
+			transaction = await contract.participateWithMatic(paymentValue.asBigNumber(), {value: paymentValue.asBigNumber(), gasLimit: 5000000});
 		}
 
 		toast.info(infoToast(transaction), {
