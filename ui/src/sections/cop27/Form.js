@@ -379,13 +379,13 @@ export default function Form(props) {
             height: "460px"
 					}}
 				> 
-    <h3>POAP</h3>
+    <h3>Decarbonize COP27 POAP</h3>
       <Stack spacing={6} alignItems="center">
 				<img src='/assets/cop27-poap-1.png' alt="POAP art work" width="60%" height="60%" />
-				<br/>This POAP will enable you to vote on a nature conservation project. Participants will be notified about the vote on poap.vote shortly after COP 27<br/>
+				<br/>Participants will start receiving their POAPs starting from 13th November, 2022. <br/>
       </Stack>
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 8  }}>
         <Button color="poap"  variant="contained" target="_blank" href={`https://app.poap.xyz/scan/${accountAddress}`} disabled={!accountAddress}>My POAPs</Button>
       </Stack>
       <ToastContainer />
