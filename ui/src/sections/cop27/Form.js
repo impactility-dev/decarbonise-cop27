@@ -122,7 +122,7 @@ export default function Form(props) {
 			const contract = await initContract();
 			let amount = await contract.calculateNeededAmount(addresses.WMATIC, value.asBigNumber());
     	amount = new BigNumber(amount, tokenDecimals.MATIC);
-			finalAmount =  new BigNumber(1.01 * amount?.asFloat(), tokenDecimals.MATIC);
+			finalAmount =  new BigNumber(1.10 * amount?.asFloat(), tokenDecimals.MATIC);
 		}
 
     setFinalAmount(finalAmount?.asFloat());
