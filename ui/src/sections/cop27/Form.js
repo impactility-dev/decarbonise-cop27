@@ -182,7 +182,7 @@ export default function Form(props) {
 		if (token === "NCT") {
 			transaction = await contract.participateWithToken(addresses.NCT, paymentValue.asBigNumber(), {gasLimit: 5000000});
 		} else {
-			transaction = await contract.participateWithMatic(paymentValue.asBigNumber(), {value: paymentValue.asBigNumber(), gasLimit: 5000000});
+			transaction = await contract.participateWithMatic(flightEmission.asBigNumber(), {value: paymentValue.asBigNumber(), gasLimit: 5000000});
 		}
 
 		toast.info(infoToast(transaction), {
