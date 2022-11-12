@@ -206,7 +206,7 @@ export const questions = [
 				<Typography paragraph>
 					Impact Club is an attempt to create an ecosystem by encouraging individuals 
 					and organisations to acknowledge impact initiatives, foster collaboration and 
-					incentives stakeholders to implement regenerative principles using Web3 technologies.
+					incentivize stakeholders to implement regenerative principles using Web3 technologies.
 				</Typography>
 				<Typography paragraph>
 					Impact Club is backed by a wave of change makers who demand positive change 
