@@ -386,6 +386,7 @@ export default function Form(props) {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 8  }}>
+	<Button color="poap"  variant="contained" target="_blank" href='https://www.poap.delivery/cop27impact' disabled={!accountAddress}>Claim POAP</Button>
         <Button color="poap"  variant="contained" target="_blank" href={`https://app.poap.xyz/scan/${accountAddress}`} disabled={!accountAddress}>My POAPs</Button>
       </Stack>
       <ToastContainer />
